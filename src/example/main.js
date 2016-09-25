@@ -26,9 +26,18 @@ import Mediator from './Mediator';
 
 import { isReactDOMSupported } from '../lib/utils/react-utils';
 
+let mapid = '55e02e777274468c90745fde6641faf4';
+const urlParams = location.hash.substring(1).split('&');
+urlParams.forEach(function (urlParam) {
+  var param = urlParam.split('=');
+  if(param[0] === 'mapid') {
+    mapid = param[1]
+  }
+});
+
 const appContents = (
   <main>
-    <Mediator />
+    <Mediator mapid={mapid} />
   </main>
 );
 
