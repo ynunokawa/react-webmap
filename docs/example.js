@@ -105,10 +105,12 @@ var Mediator = function (_React$Component) {
         this.setView = this.setView.bind(this);
       }.bind(this));
       webmap.on('metadataLoad', function () {
-        this.setState({
-          initialCenter: [map.getCenter().lat, map.getCenter().lng],
-          initialZoom: map.getZoom()
-        });
+        setTimeout(function () {
+          this.setState({
+            initialCenter: [map.getCenter().lat, map.getCenter().lng],
+            initialZoom: map.getZoom()
+          });
+        }.bind(this), 500);
       }.bind(this));
     }
   }, {
