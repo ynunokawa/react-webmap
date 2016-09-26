@@ -21,6 +21,7 @@
 import React from 'react';
 import { Navbar, Nav, NavItem, Grid, Row, Col } from 'react-bootstrap';
 import MapView from './mapview/MapView';
+import HomeButton from './reactors/HomeButton';
 
 class Mediator extends React.Component {
   constructor (props) {
@@ -30,6 +31,8 @@ class Mediator extends React.Component {
         center: [],
         zoom: 5,
         bounds: {},
+        initialCenter: [],
+        initialZoom: 5,
         title: '',
         layers: [],
         bookmarks: [],
@@ -65,7 +68,19 @@ class Mediator extends React.Component {
         portalItem: webmap.portalItem
       });
       this._initMapEventListeners();
+      this.setView = this.setView.bind(this);
     }.bind(this));
+    webmap.on('metadataLoad', function () {
+      this.setState({
+        initialCenter: [map.getCenter().lat, map.getCenter().lng],
+        initialZoom: map.getZoom()
+      });
+    }.bind(this));
+  }
+  
+  setView (center, zoom) {
+    const map = this.state.map;
+    map.setView(center, zoom);
   }
 
   componentDidMount () {
@@ -105,6 +120,7 @@ class Mediator extends React.Component {
               <MapView />
             </Col>
             <Col xs={12} md={4}>
+              <HomeButton center={this.state.initialCenter} zoom={this.state.initialZoom} onGetHome={this.setView} />
             </Col>
           </Row>
         </Grid>
