@@ -22,11 +22,13 @@ import React from 'react';
 import { Navbar, Nav, NavItem, Grid, Row, Col } from 'react-bootstrap';
 import MapView from './mapview/MapView';
 import HomeButton from './reactors/HomeButton';
+import ListGroups from './reactors/ListGroups';
 
 class Mediator extends React.Component {
   constructor (props) {
       super(props);
       this.state = {
+        webmap: {},
         map: {},
         center: [],
         zoom: 5,
@@ -36,13 +38,37 @@ class Mediator extends React.Component {
         title: '',
         layers: [],
         bookmarks: [],
-        portalItem: {}
+        portalItem: {},
+        listGroups: {
+          layer: {},
+          layoutFields: {
+            type: '',
+            typeValues: [],
+            name: '',
+            label: '',
+            sort: ''
+          }
+        }
       };
   }
 
   _initMapEventListeners () {
     const map = this.state.map;
     map.on('moveend', this._onMapMoveend, this);
+  }
+
+  _initComponents () {
+    this._initListGroups();
+  }
+
+  _initListGroups () {
+    const layers = this.state.layers;
+    this.setState({
+      listGroups: {
+        layer: layers[this.props.listGroupsLayerIndex],
+        layoutFields: this.props.listGroupsLayoutFields
+      }
+    });
   }
 
   _onMapMoveend (e) {
@@ -58,6 +84,7 @@ class Mediator extends React.Component {
     const webmap = L.esri.webMap(mapid, { map: map });
     webmap.on('load', function () {
       this.setState({
+        webmap: webmap,
         map: map,
         center: map.getCenter(),
         zoom: map.getZoom(),
@@ -69,6 +96,8 @@ class Mediator extends React.Component {
       });
       this._initMapEventListeners();
       this.setView = this.setView.bind(this);
+      
+      this._initComponents();
     }.bind(this));
     webmap.on('metadataLoad', function () {
       setTimeout(function () {
@@ -107,22 +136,54 @@ class Mediator extends React.Component {
             <Navbar.Brand>
               <a href="#">React WebMap</a>
             </Navbar.Brand>
+            <Navbar.Toggle />
           </Navbar.Header>
           <Navbar.Collapse>
             <Nav>
-              <NavItem eventKey={1} href="#">A</NavItem>
-              <NavItem eventKey={2} href="#">B</NavItem>
-              <NavItem eventKey={3} href="#">C</NavItem>
+              <NavItem eventKey={1} href="#mediator">Mediator</NavItem>
+              <NavItem eventKey={2} href="#mapview">MapView</NavItem>
+              <NavItem eventKey={3} href="#reactors">Reactors</NavItem>
             </Nav>
           </Navbar.Collapse>
         </Navbar>
+        <style type="text/css">{`
+        .row {
+            margin-bottom: 20px;
+        }
+        `}</style>
         <Grid>
           <Row>
-            <Col xs={12} md={8}>
+            <Col xs={12} md={12}>
+              <h1 id="mediator">Mediator</h1>
+              <h4><code>&lt;Mediator /&gt;</code></h4>
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={12} md={12}>
+              <h3 id="mapview">MapView</h3>
+              <h4><code>&lt;MapView /&gt;</code></h4>
               <MapView />
             </Col>
-            <Col xs={12} md={4}>
-              <HomeButton center={this.state.initialCenter} zoom={this.state.initialZoom} onGetHome={this.setView} />
+          </Row>
+          <Row>
+            <Col xs={12} md={12}>
+              <h3 id="reactors">Reactors</h3>
+              <h4><code>&lt;HomeButton /&gt;</code></h4>
+              <HomeButton 
+                center={this.state.initialCenter} 
+                zoom={this.state.initialZoom} 
+                onGetHome={this.setView} 
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={12} md={12}>
+              <h4><code>&lt;ListGroups /&gt;</code></h4>
+              <ListGroups 
+                layer={this.state.listGroups.layer} 
+                layoutFields={this.state.listGroups.layoutFields} 
+                onClickList={this.setView} 
+              />
             </Col>
           </Row>
         </Grid>
@@ -132,7 +193,9 @@ class Mediator extends React.Component {
 }
 
 Mediator.propTypes = {
-  mapid: React.PropTypes.string
+  mapid: React.PropTypes.string,
+  listGroupsLayerIndex: React.PropTypes.number,
+  listGroupsLayoutFields: React.PropTypes.object
 };
 
 Mediator.defaultProps = {
