@@ -22,6 +22,7 @@ import React from 'react';
 import { Navbar, Nav, NavItem, Grid, Row, Col } from 'react-bootstrap';
 import MapView from './mapview/MapView';
 import HomeButton from './reactors/HomeButton/HomeButton';
+import Geocoder from './reactors/Geocoder/Geocoder';
 import ListGroups from './reactors/ListGroups/ListGroups';
 
 class Mediator extends React.Component {
@@ -102,6 +103,7 @@ class Mediator extends React.Component {
       });
       this._initMapEventListeners();
       this.setView = this.setView.bind(this);
+      this.fitBounds = this.fitBounds.bind(this);
       
       this._initComponents();
     }.bind(this));
@@ -118,6 +120,11 @@ class Mediator extends React.Component {
   setView (center, zoom) {
     const map = this.state.map;
     map.setView(center, zoom);
+  }
+
+  fitBounds (bounds) {
+    const map = this.state.map;
+    map.fitBounds(bounds);
   }
 
   componentDidMount () {
@@ -179,6 +186,14 @@ class Mediator extends React.Component {
                 center={this.state.initialCenter} 
                 zoom={this.state.initialZoom} 
                 onGetHome={this.setView} 
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={12} md={12}>
+              <h4><code>&lt;Geocoder /&gt;</code></h4>
+              <Geocoder 
+                onSearch={this.fitBounds} 
               />
             </Col>
           </Row>
