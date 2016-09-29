@@ -21,8 +21,8 @@
 import React from 'react';
 import { Navbar, Nav, NavItem, Grid, Row, Col } from 'react-bootstrap';
 import MapView from './mapview/MapView';
-import HomeButton from './reactors/HomeButton';
-import ListGroups from './reactors/ListGroups';
+import HomeButton from './reactors/HomeButton/HomeButton';
+import ListGroups from './reactors/ListGroups/ListGroups';
 
 class Mediator extends React.Component {
   constructor (props) {
@@ -30,9 +30,11 @@ class Mediator extends React.Component {
       this.state = {
         webmap: {},
         map: {},
-        center: [],
-        zoom: 5,
-        bounds: {},
+        mapState: {
+          center: [],
+          zoom: 5,
+          bounds: {}
+        },
         initialCenter: [],
         initialZoom: 5,
         title: '',
@@ -74,9 +76,11 @@ class Mediator extends React.Component {
   _onMapMoveend (e) {
     const map = this.state.map;
     this.setState({
-      center: map.getCenter(),
-      zoom: map.getZoom(),
-      bounds: map.getBounds()
+      mapState: {
+        center: map.getCenter(),
+        zoom: map.getZoom(),
+        bounds: map.getBounds()
+      }
     });
   }
 
@@ -86,9 +90,11 @@ class Mediator extends React.Component {
       this.setState({
         webmap: webmap,
         map: map,
-        center: map.getCenter(),
-        zoom: map.getZoom(),
-        bounds: map.getBounds(),
+        mapState: {
+          center: map.getCenter(),
+          zoom: map.getZoom(),
+          bounds: map.getBounds()
+        },
         title: webmap.title,
         layers: webmap.layers,
         bookmarks: webmap.bookmarks,
@@ -182,6 +188,8 @@ class Mediator extends React.Component {
               <ListGroups 
                 layer={this.state.listGroups.layer} 
                 layoutFields={this.state.listGroups.layoutFields} 
+                mapState={this.state.mapState} 
+                filter={true}
                 onClickList={this.setView} 
               />
             </Col>
