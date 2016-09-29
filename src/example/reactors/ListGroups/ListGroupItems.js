@@ -19,7 +19,7 @@
 // THE SOFTWARE.
 
 import React from 'react';
-import { ListGroupItem, Badge, utils } from 'react-bootstrap';
+import { ListGroup, ListGroupItem, Badge, utils } from 'react-bootstrap';
 
 class ListGroupItems extends React.Component {
   constructor (props) {
@@ -40,9 +40,15 @@ class ListGroupItems extends React.Component {
   }
 
   render () {
+    utils.bootstrapUtils.addStyle(ListGroupItem, 'custom');
     utils.bootstrapUtils.addStyle(Badge, 'custom');
     
     const layoutFields = this.props.layoutFields;
+    const typeValue = this.props.typeValue;
+
+    const listGroupHeader = (
+      <ListGroupItem bsStyle="custom">{typeValue}</ListGroupItem>
+    );
       
     const listGroupItems = this.props.features.map(function (f, index) {
       return (
@@ -54,14 +60,16 @@ class ListGroupItems extends React.Component {
     }.bind(this));
 
     return (
-      <span>
+      <ListGroup>
+        {listGroupHeader}
         {listGroupItems}
-      </span>
+      </ListGroup>
     );
   }
 }
 
 ListGroupItems.propTypes = {
+  typeValue: React.PropTypes.string,
   features: React.PropTypes.array,
   layer: React.PropTypes.object,
   layoutFields: React.PropTypes.object,

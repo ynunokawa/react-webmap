@@ -19,7 +19,7 @@
 // THE SOFTWARE.
 
 import React from 'react';
-import { Grid, Row, Col, ListGroup, ListGroupItem, Badge, utils } from 'react-bootstrap';
+import { Grid, Row, Col } from 'react-bootstrap';
 import Switch from 'react-bootstrap-switch';
 import ListGroupItems from './ListGroupItems';
 
@@ -63,19 +63,33 @@ class ListGroups extends React.Component {
   }
 
   render () {
-    utils.bootstrapUtils.addStyle(ListGroupItem, 'custom');
-    utils.bootstrapUtils.addStyle(Badge, 'custom');
-    
     const layer = this.props.layer;
     const layoutFields = this.props.layoutFields;
     const bounds = this.props.mapState.bounds;
     const filter = this.state.filter;
 
-    const listGroups = layoutFields.typeValues.map(function (t, i) {
-      const listGroupHeader = (
-        <ListGroupItem bsStyle="custom">{t}</ListGroupItem>
-      );
+    let filterSwitch;
 
+    if (this.props.switch === true) {
+      filterSwitch = (
+        <Col xs={12}>
+        <style type="text/css">{`
+        .bootstrap-switch {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        `}</style>
+        <Switch 
+          defaultValue={this.props.filter} 
+          onChange={this.onFilter} 
+          onText={"Filtered"}
+          offText={"Unfiltered"}
+        />
+      </Col>
+      );
+    }
+
+    const listGroups = layoutFields.typeValues.map(function (t, i) {
       let features = [];
       let lyr = null;
 
@@ -100,22 +114,16 @@ class ListGroups extends React.Component {
       features = features.sort(function (a, b) {
         return b.properties[layoutFields.sort] - a.properties[layoutFields.sort];
       });
-      
-      const listGroupItems = (
-        <ListGroupItems 
-          features={features}
-          layer={lyr} 
-          layoutFields={this.props.layoutFields} 
-          onClickList={this.props.onClickList}
-        />
-      );
 
       return (
         <Col xs={12} sm={6} md={4} key={t}>
-          <ListGroup>
-            {listGroupHeader}
-            {listGroupItems}
-          </ListGroup>
+          <ListGroupItems 
+            typeValue={t}
+            features={features}
+            layer={lyr} 
+            layoutFields={this.props.layoutFields} 
+            onClickList={this.props.onClickList}
+          />
         </Col>
       );
     }.bind(this));
@@ -123,20 +131,7 @@ class ListGroups extends React.Component {
     return (
         <Grid>
           <Row>
-            <Col xs={12}>
-              <style type="text/css">{`
-              .bootstrap-switch {
-                  margin-top: 10px;
-                  margin-bottom: 10px;
-              }
-              `}</style>
-              <Switch 
-                defaultValue={this.props.filter} 
-                onChange={this.onFilter} 
-                onText={"Filtered"}
-                offText={"Unfiltered"}
-              />
-            </Col>
+            {filterSwitch}
             <style type="text/css">{`
             .list-group-item-custom {
                 background-color: #f5646a;
@@ -168,10 +163,12 @@ ListGroups.propTypes = {
   layoutFields: React.PropTypes.object,
   mapState: React.PropTypes.object,
   filter: React.PropTypes.bool,
+  switch: React.PropTypes.bool,
   onClickList: React.PropTypes.func
 };
 
 ListGroups.defaultProps = {
+  switch: true,
   onClickList: function () {}
 };
 
