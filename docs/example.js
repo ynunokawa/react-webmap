@@ -628,7 +628,7 @@ var Geocoder = function (_React$Component) {
   }, {
     key: '_onClickSuggestion',
     value: function _onClickSuggestion(e) {
-      this.search(e.target.textContent);
+      this.search(e.target.textContent, e.target.id);
     }
   }, {
     key: '_onKeyPress',
@@ -639,11 +639,30 @@ var Geocoder = function (_React$Component) {
     }
   }, {
     key: 'search',
-    value: function search(text) {
-      L.esri.Geocoding.geocode().text(text).run(function (err, results, response) {
-        this.setState({ suggestions: [] });
-        this.props.onSearch(results.results[0].bounds);
-      }.bind(this));
+    value: function search(text, magicKey) {
+      if (magicKey) {
+        // can not contain magicKey into parameters of L.esri.Geocoding.geocode()..
+        var geocodeUrl = 'https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/find';
+        L.esri.request(geocodeUrl, {
+          outSr: 4326,
+          forStorage: false,
+          outFields: '*',
+          maxLocations: 20,
+          text: text,
+          magicKey: magicKey,
+          f: 'json'
+        }, function (error, response) {
+          var ext = response.locations[0].extent;
+          var bounds = [[ext.ymin, ext.xmin], [ext.ymax, ext.xmin]];
+          this.setState({ suggestions: [] });
+          this.props.onSearch(bounds);
+        }.bind(this));
+      } else {
+        L.esri.Geocoding.geocode().text(text).run(function (err, results, response) {
+          this.setState({ suggestions: [] });
+          this.props.onSearch(results.results[0].bounds);
+        }.bind(this));
+      }
     }
   }, {
     key: 'render',
@@ -654,7 +673,7 @@ var Geocoder = function (_React$Component) {
         var suggestionItems = this.state.suggestions.map(function (s, i) {
           return _react2.default.createElement(
             _reactBootstrap.MenuItem,
-            { onClick: this._onClickSuggestion, key: s.magicKey },
+            { onClick: this._onClickSuggestion, id: s.magicKey, key: s.magicKey },
             s.text
           );
         }.bind(this));
