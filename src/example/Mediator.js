@@ -23,6 +23,7 @@ import { Navbar, Nav, NavItem, Grid, Row, Col } from 'react-bootstrap';
 import MapView from './mapview/MapView';
 import HomeButton from './reactors/HomeButton/HomeButton';
 import Geocoder from './reactors/Geocoder/Geocoder';
+import LayerList from './reactors/LayerList/LayerList';
 import ListGroups from './reactors/ListGroups/ListGroups';
 
 class Mediator extends React.Component {
@@ -104,7 +105,7 @@ class Mediator extends React.Component {
       }.bind(this), 500);
     }.bind(this));
   }
-  
+
   setView (center, zoom) {
     const map = this.state.map;
     map.setView(center, zoom);
@@ -170,30 +171,39 @@ class Mediator extends React.Component {
             <Col xs={12} md={12}>
               <h3 id="reactors">Reactors</h3>
               <h4><code>&lt;HomeButton /&gt;</code></h4>
-              <HomeButton 
-                center={this.state.initialCenter} 
-                zoom={this.state.initialZoom} 
-                onGetHome={this.setView} 
+              <HomeButton
+                center={this.state.initialCenter}
+                zoom={this.state.initialZoom}
+                onGetHome={this.setView}
               />
             </Col>
           </Row>
           <Row>
             <Col xs={12} md={12}>
               <h4><code>&lt;Geocoder /&gt;</code></h4>
-              <Geocoder 
-                onSearch={this.fitBounds} 
+              <Geocoder
+                onSearch={this.fitBounds}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={12} md={12}>
+              <h4><code>&lt;LayerList /&gt;</code></h4>
+              <LayerList
+                map={this.state.map}
+                layers={this.state.layers}
               />
             </Col>
           </Row>
           <Row>
             <Col xs={12} md={12}>
               <h4><code>&lt;ListGroups /&gt;</code></h4>
-              <ListGroups 
-                layer={this.state.listGroups.layer} 
-                layoutFields={this.state.listGroups.layoutFields} 
-                mapState={this.state.mapState} 
+              <ListGroups
+                layer={this.state.listGroups.layer}
+                layoutFields={this.state.listGroups.layoutFields}
+                mapState={this.state.mapState}
                 filter={true}
-                onClickList={this.setView} 
+                onClickList={this.setView}
               />
             </Col>
           </Row>
