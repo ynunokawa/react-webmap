@@ -60,20 +60,6 @@ class Mediator extends React.Component {
     map.on('moveend', this._onMapMoveend, this);
   }
 
-  _initComponents () {
-    this._initListGroups();
-  }
-
-  _initListGroups () {
-    const layers = this.state.layers;
-    this.setState({
-      listGroups: {
-        layer: layers[this.props.listGroupsLayerIndex],
-        layoutFields: this.props.listGroupsLayoutFields
-      }
-    });
-  }
-
   _onMapMoveend (e) {
     const map = this.state.map;
     this.setState({
@@ -99,13 +85,15 @@ class Mediator extends React.Component {
         title: webmap.title,
         layers: webmap.layers,
         bookmarks: webmap.bookmarks,
-        portalItem: webmap.portalItem
+        portalItem: webmap.portalItem,
+        listGroups: {
+          layer: webmap.layers[this.props.listGroupsLayerIndex],
+          layoutFields: this.props.listGroupsLayoutFields
+        }
       });
       this._initMapEventListeners();
       this.setView = this.setView.bind(this);
       this.fitBounds = this.fitBounds.bind(this);
-      
-      this._initComponents();
     }.bind(this));
     webmap.on('metadataLoad', function () {
       setTimeout(function () {

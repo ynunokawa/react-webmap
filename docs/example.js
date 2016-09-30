@@ -98,22 +98,6 @@ var Mediator = function (_React$Component) {
       map.on('moveend', this._onMapMoveend, this);
     }
   }, {
-    key: '_initComponents',
-    value: function _initComponents() {
-      this._initListGroups();
-    }
-  }, {
-    key: '_initListGroups',
-    value: function _initListGroups() {
-      var layers = this.state.layers;
-      this.setState({
-        listGroups: {
-          layer: layers[this.props.listGroupsLayerIndex],
-          layoutFields: this.props.listGroupsLayoutFields
-        }
-      });
-    }
-  }, {
     key: '_onMapMoveend',
     value: function _onMapMoveend(e) {
       var map = this.state.map;
@@ -141,13 +125,15 @@ var Mediator = function (_React$Component) {
           title: webmap.title,
           layers: webmap.layers,
           bookmarks: webmap.bookmarks,
-          portalItem: webmap.portalItem
+          portalItem: webmap.portalItem,
+          listGroups: {
+            layer: webmap.layers[this.props.listGroupsLayerIndex],
+            layoutFields: this.props.listGroupsLayoutFields
+          }
         });
         this._initMapEventListeners();
         this.setView = this.setView.bind(this);
         this.fitBounds = this.fitBounds.bind(this);
-
-        this._initComponents();
       }.bind(this));
       webmap.on('metadataLoad', function () {
         setTimeout(function () {
