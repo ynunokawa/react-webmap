@@ -592,6 +592,7 @@ var Geocoder = function (_React$Component) {
     _this._onSearch = _this._onSearch.bind(_this);
     _this._onChangeText = _this._onChangeText.bind(_this);
     _this._onClickSuggestion = _this._onClickSuggestion.bind(_this);
+    _this._onKeyPress = _this._onKeyPress.bind(_this);
     return _this;
   }
 
@@ -608,10 +609,9 @@ var Geocoder = function (_React$Component) {
         L.esri.Geocoding.suggest().text(this.state.text).run(function (err, response) {
           console.log(err, response.suggestions);
           this.setState({ suggestions: response.suggestions });
-          /*L.esri.Geocoding.geocode({ magicKey: response.suggestions[0].magicKey }).text(response.suggestions[0].text).run(function (err, results, response) {
-            console.log(results);
-          }.bind(this));*/
         }.bind(this));
+      } else {
+        this.setState({ suggestions: [] });
       }
     }
   }, {
@@ -620,16 +620,24 @@ var Geocoder = function (_React$Component) {
       this.search(e.target.textContent);
     }
   }, {
+    key: '_onKeyPress',
+    value: function _onKeyPress(e) {
+      if (e.charCode === 13) {
+        this.search(this.state.text);
+      }
+    }
+  }, {
     key: 'search',
     value: function search(text) {
       L.esri.Geocoding.geocode().text(text).run(function (err, results, response) {
+        this.setState({ suggestions: [] });
         this.props.onSearch(results.results[0].bounds);
       }.bind(this));
     }
   }, {
     key: 'render',
     value: function render() {
-      var suggestions = void 0;
+      var suggestions = null;
 
       if (this.state.suggestions.length > 0) {
         var suggestionItems = this.state.suggestions.map(function (s, i) {
@@ -644,6 +652,8 @@ var Geocoder = function (_React$Component) {
           null,
           suggestionItems
         );
+      } else {
+        suggestions = _react2.default.createElement('span', null);
       }
 
       return _react2.default.createElement(
@@ -652,7 +662,7 @@ var Geocoder = function (_React$Component) {
         _react2.default.createElement(
           _reactBootstrap.InputGroup,
           { onChange: this._onChangeText },
-          _react2.default.createElement(_reactBootstrap.FormControl, { type: 'text', placeholder: this.props.placeholder }),
+          _react2.default.createElement(_reactBootstrap.FormControl, { type: 'text', placeholder: this.props.placeholder, onKeyPress: this._onKeyPress }),
           _react2.default.createElement(
             _reactBootstrap.InputGroup.Button,
             null,
@@ -666,7 +676,7 @@ var Geocoder = function (_React$Component) {
         _react2.default.createElement(
           'style',
           { type: 'text/css' },
-          '\n        .dropdown-menu {\n            display: block;\n            left: 15px;\n        }\n        '
+          '\n        .dropdown-menu {\n            display: block;\n            top: 85%;\n            left: 15px;\n        }\n        '
         ),
         suggestions
       );

@@ -31,6 +31,7 @@ class Geocoder extends React.Component {
       this._onSearch = this._onSearch.bind(this);
       this._onChangeText = this._onChangeText.bind(this);
       this._onClickSuggestion = this._onClickSuggestion.bind(this);
+      this._onKeyPress = this._onKeyPress.bind(this);
   }
 
   _onSearch (e) {
@@ -43,10 +44,9 @@ class Geocoder extends React.Component {
       L.esri.Geocoding.suggest().text(this.state.text).run(function (err, response) {
         console.log(err, response.suggestions);
         this.setState({ suggestions: response.suggestions });
-        /*L.esri.Geocoding.geocode({ magicKey: response.suggestions[0].magicKey }).text(response.suggestions[0].text).run(function (err, results, response) {
-          console.log(results);
-        }.bind(this));*/
       }.bind(this));
+    } else {
+      this.setState({ suggestions: [] });
     }
   }
 
@@ -54,14 +54,21 @@ class Geocoder extends React.Component {
     this.search(e.target.textContent);
   }
 
+  _onKeyPress (e) {
+    if (e.charCode === 13) {
+      this.search(this.state.text);
+    }
+  }
+
   search (text) {
     L.esri.Geocoding.geocode().text(text).run(function (err, results, response) {
+      this.setState({ suggestions: [] });
       this.props.onSearch(results.results[0].bounds);
     }.bind(this));
   }
 
   render () {
-    let suggestions;
+    let suggestions = null;
 
     if (this.state.suggestions.length > 0) {
       const suggestionItems = this.state.suggestions.map(function (s, i) {
@@ -74,12 +81,16 @@ class Geocoder extends React.Component {
           {suggestionItems}
         </Dropdown.Menu>
       );
+    } else {
+      suggestions = (
+        <span></span>
+      );
     }
 
     return (
       <FormGroup>
         <InputGroup onChange={this._onChangeText}>
-          <FormControl type="text" placeholder={this.props.placeholder} />
+          <FormControl type="text" placeholder={this.props.placeholder} onKeyPress={this._onKeyPress} />
           <InputGroup.Button>
             <Button onClick={this._onSearch}><Glyphicon glyph="search" /></Button>
           </InputGroup.Button>
@@ -87,6 +98,7 @@ class Geocoder extends React.Component {
         <style type="text/css">{`
         .dropdown-menu {
             display: block;
+            top: 85%;
             left: 15px;
         }
         `}</style>
