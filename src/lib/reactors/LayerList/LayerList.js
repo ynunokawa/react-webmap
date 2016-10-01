@@ -20,23 +20,12 @@
 
 import React from 'react';
 import { ListGroup, ListGroupItem, Checkbox, Glyphicon } from 'react-bootstrap';
+import Rcslider from 'rc-slider';
+import LayerItem from './LayerItem';
 
 class LayerList extends React.Component {
   constructor (props) {
       super(props);
-      this._onChangeVisibility = this._onChangeVisibility.bind(this);
-  }
-
-  _onChangeVisibility (e) {
-    const checked = e.target.checked;
-    const index = Number(e.target.id.slice(-1));
-    const layers = this.props.layers;
-    const map = this.props.map;
-    if (checked === true) {
-      map.addLayer(layers[index].layer);
-    } else {
-      map.removeLayer(layers[index].layer);
-    }
   }
 
   render () {
@@ -45,23 +34,26 @@ class LayerList extends React.Component {
     const headerText = this.props.headerText;
 
     const layerList = layers.map(function (l, i) {
-      if(map.hasLayer(layers[i].layer) === true) {
-        return (
-          <ListGroupItem key={l.title + i}>
-            <Checkbox id={l.title + '_' + i} onChange={this._onChangeVisibility} defaultChecked>
-              {l.title}
-            </Checkbox>
-          </ListGroupItem>
-        );
+      let opacity = 1;
+      let pane;
+      if (i == 0) {
+        pane = document.getElementsByClassName('leaflet-tile-pane')[0];
       } else {
-        return (
-          <ListGroupItem key={l.title + i}>
-            <Checkbox id={l.title + '_' + i} onChange={this._onChangeVisibility}>
-              {l.title}
-            </Checkbox>
-          </ListGroupItem>
-        );
+        pane = document.getElementsByClassName('leaflet-esri-webmap-layer' + (i - 1) + '-pane')[0];
       }
+      if (pane.style.opacity !== undefined && pane.style.opacity !== null && pane.style.opacity !== '') {
+        opacity = Number(pane.style.opacity);
+      }
+      return (
+        <LayerItem
+          name={l.title}
+          layer={l}
+          pane={pane}
+          initialOpacity={opacity}
+          map={map}
+          key={l.title + i}
+        />
+      );
     }.bind(this));
 
     return (
@@ -71,6 +63,15 @@ class LayerList extends React.Component {
         .checkbox {
             margin-top: 0;
             margin-bottom: 0;
+            display: inline-block;
+            width: 80%;
+        }
+        .rc-slider {
+            display: inline-block;
+            width: 20%;
+        }
+        .list-group-item.active {
+            z-index: 0;
         }
         `}</style>
         {layerList}
