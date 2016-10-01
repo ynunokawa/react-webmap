@@ -888,9 +888,9 @@ var LayerItem = function (_React$Component) {
       var layer = this.props.layer.layer;
       var map = this.props.map;
       if (checked === true) {
-        map.addLayer(layers[index].layer);
+        map.addLayer(layer);
       } else {
-        map.removeLayer(layers[index].layer);
+        map.removeLayer(layer);
       }
     }
   }, {
