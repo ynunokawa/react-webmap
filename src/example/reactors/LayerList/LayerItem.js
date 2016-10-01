@@ -37,9 +37,9 @@ class LayerItem extends React.Component {
     const layer = this.props.layer.layer;
     const map = this.props.map;
     if (checked === true) {
-      map.addLayer(layers[index].layer);
+      map.addLayer(layer);
     } else {
-      map.removeLayer(layers[index].layer);
+      map.removeLayer(layer);
     }
   }
 
