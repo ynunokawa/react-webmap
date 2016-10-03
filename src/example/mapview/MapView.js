@@ -26,25 +26,29 @@ class MapView extends React.Component {
   }
 
   render () {
+    const mapContainerStyle = {
+      width: this.props.width,
+      height: this.props.height,
+    };
+
     return (
       <div>
-      <style type="text/css">{`
-      #react-esri-map {
-          height: 300px;
-      }
-      `}</style>
-      <div id={this.props.id}></div>
+      <div id={this.props.id} style={mapContainerStyle}></div>
       </div>
     );
   }
 }
 
 MapView.propTypes = {
-  id: React.PropTypes.string
+  id: React.PropTypes.string,
+  height: React.PropTypes.string,
+  width: React.PropTypes.string
 };
 
 MapView.defaultProps = {
-  id: 'react-esri-map'
+  id: 'react-esri-map',
+  height: '100%',
+  width: '100%'
 };
 
 MapView.displayName = 'MapView';

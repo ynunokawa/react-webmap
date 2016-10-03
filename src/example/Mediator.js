@@ -19,7 +19,7 @@
 // THE SOFTWARE.
 
 import React from 'react';
-import { Navbar, Nav, NavItem, Grid, Row, Col } from 'react-bootstrap';
+import { Navbar, Nav, NavItem, NavDropdown, MenuItem, Grid, Row, Col } from 'react-bootstrap';
 import MapView from './mapview/MapView';
 import HomeButton from './reactors/HomeButton/HomeButton';
 import Geocoder from './reactors/Geocoder/Geocoder';
@@ -125,7 +125,7 @@ class Mediator extends React.Component {
     map.fitBounds(bounds);
   }
 
-  // You can 
+  // You can
   readyComponents () {
     const listGroupsLayerIndex = 2;
     const listGroupsLayoutFields = {
@@ -173,7 +173,37 @@ class Mediator extends React.Component {
     return (
       <div>
         <a href="https://github.com/ynunokawa/react-webmap"><img style={{position: 'absolute', top: 0, right: 0, border: 0, zIndex: 99999}} src="https://camo.githubusercontent.com/652c5b9acfaddf3a9c326fa6bde407b87f7be0f4/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6f72616e67655f6666373630302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"></img></a>
-        <Navbar>
+        <style type="text/css">{`
+        .fixed-nav {
+            position: fixed;
+            width: 100%;
+            z-index: 99998;
+        }
+        @media (min-height: 737px) {
+          .fixed-container {
+              position: fixed;
+              width: 100%;
+              background: #fff;
+              z-index: 99997;
+          }
+          .container {
+              width: 100%;
+          }
+          .offset-top2 {
+              margin-top: 550px;
+          }
+        }
+        .row {
+            margin-bottom: 20px;
+        }
+        .offset-top1 {
+            margin-top: 50px;
+        }
+        .offset-bottom {
+            margin-bottom: 0;
+        }
+        `}</style>
+        <Navbar className="fixed-nav">
           <Navbar.Header>
             <Navbar.Brand>
               <a href="#">React WebMap</a>
@@ -182,35 +212,38 @@ class Mediator extends React.Component {
           </Navbar.Header>
           <Navbar.Collapse>
             <Nav>
-              <NavItem eventKey={1} href="#mediator">Mediator</NavItem>
-              <NavItem eventKey={2} href="#mapview">MapView</NavItem>
-              <NavItem eventKey={3} href="#reactors">Reactors</NavItem>
+              <NavItem eventKey={1} href="#mapview">MapView</NavItem>
+              <NavDropdown eventKey={2} title="Reactors" id="basic-nav-dropdown">
+                <MenuItem eventKey={2.1} href="#homebutton">HomeButton</MenuItem>
+                <MenuItem eventKey={2.2} href="#bookmarks">Bookmarks</MenuItem>
+                <MenuItem eventKey={2.3} href="#geocoder">Geocoder</MenuItem>
+                <MenuItem eventKey={2.3} href="#layerlist">LayerList</MenuItem>
+                <MenuItem eventKey={2.3} href="#listgroups">ListGroups</MenuItem>
+                <MenuItem eventKey={2.3} href="#showcase">Showcase</MenuItem>
+              </NavDropdown>
             </Nav>
           </Navbar.Collapse>
         </Navbar>
-        <style type="text/css">{`
-        .row {
-            margin-bottom: 20px;
-        }
-        `}</style>
+        <Grid className="fixed-container">
+          <Row className="offset-top1">
+            <Col xs={12} md={12}>
+              <h2 id="mapview">MapView</h2>
+              <p>MapView is <code>&lt;div&gt;</code> for rendering a <code>L.map</code>. It just creates view and give states and events of a map to Mediator.</p>
+              <h3><code>&lt;MapView /&gt;</code></h3>
+              <MapView height={"200px"} />
+            </Col>
+          </Row>
+          <Row className="offset-bottom">
+            <Col xs={12} md={12}>
+              <h2 id="reactors">Reactors</h2>
+              <p>Reactors are collection of React components for workging with a map. They receive a data of <code>L.map</code> via Mediator and render with it.</p>
+            </Col>
+          </Row>
+        </Grid>
         <Grid>
-          <Row>
+          <Row className="offset-top2">
             <Col xs={12} md={12}>
-              <h1 id="mediator">Mediator</h1>
-              <h4><code>&lt;Mediator /&gt;</code></h4>
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={12} md={12}>
-              <h3 id="mapview">MapView</h3>
-              <h4><code>&lt;MapView /&gt;</code></h4>
-              <MapView />
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={12} md={12}>
-              <h3 id="reactors">Reactors</h3>
-              <h4><code>&lt;HomeButton /&gt;</code></h4>
+              <h3 id="homebutton"><code>&lt;HomeButton /&gt;</code></h3>
               <HomeButton
                 center={this.state.initialCenter}
                 zoom={this.state.initialZoom}
@@ -220,16 +253,16 @@ class Mediator extends React.Component {
           </Row>
           <Row>
             <Col xs={12} md={12}>
-              <h4><code>&lt;Bookmarks /&gt;</code></h4>
+              <h3 id="bookmarks"><code>&lt;Bookmarks /&gt;</code></h3>
               <Bookmarks
-                bookmarks={this.state.bookmarks} 
+                bookmarks={this.state.bookmarks}
                 onClickBookmark={this.fitBounds}
               />
             </Col>
           </Row>
           <Row>
             <Col xs={12} md={12}>
-              <h4><code>&lt;Geocoder /&gt;</code></h4>
+              <h3 id="geocoder"><code>&lt;Geocoder /&gt;</code></h3>
               <Geocoder
                 onSearch={this.fitBounds}
               />
@@ -237,7 +270,7 @@ class Mediator extends React.Component {
           </Row>
           <Row>
             <Col xs={12} md={12}>
-              <h4><code>&lt;LayerList /&gt;</code></h4>
+              <h3 id="layerlist"><code>&lt;LayerList /&gt;</code></h3>
               <LayerList
                 map={this.state.map}
                 layers={this.state.layers}
@@ -246,7 +279,7 @@ class Mediator extends React.Component {
           </Row>
           <Row>
             <Col xs={12} md={12}>
-              <h4><code>&lt;ListGroups /&gt;</code></h4>
+              <h3 id="listgroups"><code>&lt;ListGroups /&gt;</code></h3>
               <ListGroups
                 layer={this.state.listGroups.layer}
                 layoutFields={this.state.listGroups.layoutFields}
@@ -258,7 +291,7 @@ class Mediator extends React.Component {
           </Row>
           <Row>
             <Col xs={12} md={12}>
-              <h4><code>&lt;Showcase /&gt;</code></h4>
+              <h3 id="showcase"><code>&lt;Showcase /&gt;</code></h3>
               <Showcase
                 layer={this.state.showcase.layer}
                 layoutFields={this.state.showcase.layoutFields}
