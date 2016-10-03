@@ -23,7 +23,10 @@ import { Navbar, Nav, NavItem, Grid, Row, Col } from 'react-bootstrap';
 import MapView from './mapview/MapView';
 import HomeButton from './reactors/HomeButton/HomeButton';
 import Geocoder from './reactors/Geocoder/Geocoder';
+import Bookmarks from './reactors/Bookmarks/Bookmarks';
+import LayerList from './reactors/LayerList/LayerList';
 import ListGroups from './reactors/ListGroups/ListGroups';
+import Showcase from './reactors/Showcase/Showcase';
 
 class Mediator extends React.Component {
   constructor (props) {
@@ -49,6 +52,16 @@ class Mediator extends React.Component {
             typeValues: [],
             name: '',
             label: '',
+            sort: ''
+          }
+        },
+        showcase: {
+          layer: {},
+          layoutFields: {
+            name: '',
+            description: '',
+            image: '',
+            imageUrlPrefix: '',
             sort: ''
           }
         }
@@ -85,15 +98,12 @@ class Mediator extends React.Component {
         title: webmap.title,
         layers: webmap.layers,
         bookmarks: webmap.bookmarks,
-        portalItem: webmap.portalItem,
-        listGroups: {
-          layer: webmap.layers[this.props.listGroupsLayerIndex],
-          layoutFields: this.props.listGroupsLayoutFields
-        }
+        portalItem: webmap.portalItem
       });
       this._initMapEventListeners();
       this.setView = this.setView.bind(this);
       this.fitBounds = this.fitBounds.bind(this);
+      this.readyComponents();
     }.bind(this));
     webmap.on('metadataLoad', function () {
       setTimeout(function () {
@@ -104,7 +114,7 @@ class Mediator extends React.Component {
       }.bind(this), 500);
     }.bind(this));
   }
-  
+
   setView (center, zoom) {
     const map = this.state.map;
     map.setView(center, zoom);
@@ -113,6 +123,37 @@ class Mediator extends React.Component {
   fitBounds (bounds) {
     const map = this.state.map;
     map.fitBounds(bounds);
+  }
+
+  // You can 
+  readyComponents () {
+    const listGroupsLayerIndex = 2;
+    const listGroupsLayoutFields = {
+      type: '種別',
+      typeValues: ['認可保育所', '認証保育所（A型）', '認証保育所（B型）'],
+      name: '施設名',
+      label: '定員',
+      sort: '定員'
+    };
+    const showcaseLayerIndex = 4;
+    const showcaseLayoutFields = {
+      name: '場所名',
+      description: '説明',
+      image: '画像',
+      imageUrlPrefix: 'https://muxlab.github.io/map-effects-100/data/img/',
+      sort: 'NO_'
+    }
+
+    this.setState({
+      listGroups: {
+        layer: this.state.webmap.layers[listGroupsLayerIndex],
+        layoutFields: listGroupsLayoutFields
+      },
+      showcase: {
+        layer: this.state.webmap.layers[showcaseLayerIndex],
+        layoutFields: showcaseLayoutFields
+      }
+    });
   }
 
   componentDidMount () {
@@ -170,30 +211,59 @@ class Mediator extends React.Component {
             <Col xs={12} md={12}>
               <h3 id="reactors">Reactors</h3>
               <h4><code>&lt;HomeButton /&gt;</code></h4>
-              <HomeButton 
-                center={this.state.initialCenter} 
-                zoom={this.state.initialZoom} 
-                onGetHome={this.setView} 
+              <HomeButton
+                center={this.state.initialCenter}
+                zoom={this.state.initialZoom}
+                onGetHome={this.setView}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={12} md={12}>
+              <h4><code>&lt;Bookmarks /&gt;</code></h4>
+              <Bookmarks
+                bookmarks={this.state.bookmarks} 
+                onClickBookmark={this.fitBounds}
               />
             </Col>
           </Row>
           <Row>
             <Col xs={12} md={12}>
               <h4><code>&lt;Geocoder /&gt;</code></h4>
-              <Geocoder 
-                onSearch={this.fitBounds} 
+              <Geocoder
+                onSearch={this.fitBounds}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={12} md={12}>
+              <h4><code>&lt;LayerList /&gt;</code></h4>
+              <LayerList
+                map={this.state.map}
+                layers={this.state.layers}
               />
             </Col>
           </Row>
           <Row>
             <Col xs={12} md={12}>
               <h4><code>&lt;ListGroups /&gt;</code></h4>
-              <ListGroups 
-                layer={this.state.listGroups.layer} 
-                layoutFields={this.state.listGroups.layoutFields} 
-                mapState={this.state.mapState} 
+              <ListGroups
+                layer={this.state.listGroups.layer}
+                layoutFields={this.state.listGroups.layoutFields}
+                mapState={this.state.mapState}
                 filter={true}
-                onClickList={this.setView} 
+                onClickList={this.setView}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={12} md={12}>
+              <h4><code>&lt;Showcase /&gt;</code></h4>
+              <Showcase
+                layer={this.state.showcase.layer}
+                layoutFields={this.state.showcase.layoutFields}
+                mapState={this.state.mapState}
+                onClickThumbnail={this.setView}
               />
             </Col>
           </Row>
@@ -204,9 +274,7 @@ class Mediator extends React.Component {
 }
 
 Mediator.propTypes = {
-  mapid: React.PropTypes.string,
-  listGroupsLayerIndex: React.PropTypes.number,
-  listGroupsLayoutFields: React.PropTypes.object
+  mapid: React.PropTypes.string
 };
 
 Mediator.defaultProps = {

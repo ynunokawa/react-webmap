@@ -18,13 +18,50 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-export { default as Mediator } from './lib/Mediator';
+import React from 'react';
+import { DropdownButton, Glyphicon } from 'react-bootstrap';
+import Bookmark from './Bookmark';
 
-export { default as MapView } from './lib/mapview/MapView';
+class Bookmarks extends React.Component {
+  constructor (props) {
+      super(props);
+  }
 
-export { default as HomeButton } from './lib/reactors/HomeButton/HomeButton';
-export { default as Geocoder } from './lib/reactors/Geocoder/Geocoder';
-export { default as Bookmarks } from './lib/reactors/Bookmarks/Bookmarks';
-export { default as LayerList } from './lib/reactors/LayerList/LayerList';
-export { default as ListGroups } from './lib/reactors/ListGroups/ListGroups';
-export { default as Showcase } from './lib/reactors/Showcase/Showcase';
+  render () {
+    const bookmarks = this.props.bookmarks;
+    const title = (<Glyphicon glyph="bookmark" />);
+
+    const BookmarkList = bookmarks.map(function (b, i) {
+      const name = b.name;
+      const bounds = b.bounds;
+
+      return (
+        <Bookmark
+          key={b.name + i}
+          name={b.name} 
+          bounds={b.bounds} 
+          onClickBookmark={this.props.onClickBookmark}
+        />
+      );
+    }.bind(this));
+
+    return (
+      <DropdownButton title={title} id="react-webmap-bookmarks-dropdown">
+        {BookmarkList}
+      </DropdownButton>
+    );
+  }
+}
+
+Bookmarks.propTypes = {
+  bookmarks: React.PropTypes.array,
+  onClickBookmark: React.PropTypes.func
+};
+
+Bookmarks.defaultProps = {
+  bookmarks: []
+};
+
+Bookmarks.displayName = 'Bookmarks';
+
+export default Bookmarks;

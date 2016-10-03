@@ -18,13 +18,35 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-export { default as Mediator } from './lib/Mediator';
+import React from 'react';
+import { MenuItem } from 'react-bootstrap';
 
-export { default as MapView } from './lib/mapview/MapView';
+class Bookmark extends React.Component {
+  constructor (props) {
+      super(props);
+      this._onClickBookmark = this._onClickBookmark.bind(this);
+  }
 
-export { default as HomeButton } from './lib/reactors/HomeButton/HomeButton';
-export { default as Geocoder } from './lib/reactors/Geocoder/Geocoder';
-export { default as Bookmarks } from './lib/reactors/Bookmarks/Bookmarks';
-export { default as LayerList } from './lib/reactors/LayerList/LayerList';
-export { default as ListGroups } from './lib/reactors/ListGroups/ListGroups';
-export { default as Showcase } from './lib/reactors/Showcase/Showcase';
+  _onClickBookmark () {
+    const bounds = this.props.bounds;
+    this.props.onClickBookmark(bounds);
+  }
+
+  render () {
+    const name = this.props.name;
+
+    return (
+      <MenuItem onClick={this._onClickBookmark}>{name}</MenuItem>
+    );
+  }
+}
+
+Bookmark.propTypes = {
+  name: React.PropTypes.string,
+  bounds: React.PropTypes.any,
+  onClickBookmark: React.PropTypes.func
+};
+
+Bookmark.displayName = 'Bookmark';
+
+export default Bookmark;
