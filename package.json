@@ -1,6 +1,6 @@
 {
   "name": "react-webmap",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "license": "MIT",
   "author": "Yusuke Nunokawa <ynunokawa.dev@gmail.com>",
   "description": "Web Mapping Framework for React.",
