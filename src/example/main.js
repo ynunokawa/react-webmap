@@ -35,21 +35,10 @@ urlParams.forEach(function (urlParam) {
   }
 });
 
-const listGroupsLayerIndex = 2;
-const listGroupsLayoutFields = {
-  type: '種別',
-  typeValues: ['認可保育所', '認証保育所（A型）', '認証保育所（B型）'],
-  name: '施設名',
-  label: '定員',
-  sort: '定員'
-};
-
 const appContents = (
   <main>
     <Mediator 
       mapid={mapid} 
-      listGroupsLayerIndex={listGroupsLayerIndex} 
-      listGroupsLayoutFields={listGroupsLayoutFields} 
     />
   </main>
 );
