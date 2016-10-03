@@ -55,7 +55,7 @@ class Showcase extends React.Component {
 
     const ItemThumbnails = features.map(function (f, i) {
       return (
-        <Col xs={6} md={4} key={f.properties[layoutFields.name] + i}>
+        <Col xs={12} sm={6} md={4} key={f.properties[layoutFields.name] + i}>
           <ItemThumbnail
             feature={features[i]} 
             layoutFields={layoutFields} 
