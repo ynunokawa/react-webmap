@@ -26,6 +26,7 @@ import Geocoder from './reactors/Geocoder/Geocoder';
 import Bookmarks from './reactors/Bookmarks/Bookmarks';
 import LayerList from './reactors/LayerList/LayerList';
 import ListGroups from './reactors/ListGroups/ListGroups';
+import Showcase from './reactors/Showcase/Showcase';
 
 class Mediator extends React.Component {
   constructor (props) {
@@ -51,6 +52,16 @@ class Mediator extends React.Component {
             typeValues: [],
             name: '',
             label: '',
+            sort: ''
+          }
+        },
+        showcase: {
+          layer: {},
+          layoutFields: {
+            name: '',
+            description: '',
+            image: '',
+            imageUrlPrefix: '',
             sort: ''
           }
         }
@@ -87,15 +98,12 @@ class Mediator extends React.Component {
         title: webmap.title,
         layers: webmap.layers,
         bookmarks: webmap.bookmarks,
-        portalItem: webmap.portalItem,
-        listGroups: {
-          layer: webmap.layers[this.props.listGroupsLayerIndex],
-          layoutFields: this.props.listGroupsLayoutFields
-        }
+        portalItem: webmap.portalItem
       });
       this._initMapEventListeners();
       this.setView = this.setView.bind(this);
       this.fitBounds = this.fitBounds.bind(this);
+      this.readyComponents();
     }.bind(this));
     webmap.on('metadataLoad', function () {
       setTimeout(function () {
@@ -115,6 +123,37 @@ class Mediator extends React.Component {
   fitBounds (bounds) {
     const map = this.state.map;
     map.fitBounds(bounds);
+  }
+
+  // You can 
+  readyComponents () {
+    const listGroupsLayerIndex = 2;
+    const listGroupsLayoutFields = {
+      type: '種別',
+      typeValues: ['認可保育所', '認証保育所（A型）', '認証保育所（B型）'],
+      name: '施設名',
+      label: '定員',
+      sort: '定員'
+    };
+    const showcaseLayerIndex = 4;
+    const showcaseLayoutFields = {
+      name: '場所名',
+      description: '説明',
+      image: '画像',
+      imageUrlPrefix: 'https://muxlab.github.io/map-effects-100/data/img/',
+      sort: 'NO_'
+    }
+
+    this.setState({
+      listGroups: {
+        layer: this.state.webmap.layers[listGroupsLayerIndex],
+        layoutFields: listGroupsLayoutFields
+      },
+      showcase: {
+        layer: this.state.webmap.layers[showcaseLayerIndex],
+        layoutFields: showcaseLayoutFields
+      }
+    });
   }
 
   componentDidMount () {
@@ -217,6 +256,17 @@ class Mediator extends React.Component {
               />
             </Col>
           </Row>
+          <Row>
+            <Col xs={12} md={12}>
+              <h4><code>&lt;Showcase /&gt;</code></h4>
+              <Showcase
+                layer={this.state.showcase.layer}
+                layoutFields={this.state.showcase.layoutFields}
+                mapState={this.state.mapState}
+                onClickThumbnail={this.setView}
+              />
+            </Col>
+          </Row>
         </Grid>
       </div>
     );
@@ -224,9 +274,7 @@ class Mediator extends React.Component {
 }
 
 Mediator.propTypes = {
-  mapid: React.PropTypes.string,
-  listGroupsLayerIndex: React.PropTypes.number,
-  listGroupsLayoutFields: React.PropTypes.object
+  mapid: React.PropTypes.string
 };
 
 Mediator.defaultProps = {

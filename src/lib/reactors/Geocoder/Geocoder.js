@@ -51,7 +51,7 @@ class Geocoder extends React.Component {
   }
 
   _onClickSuggestion (e) {
-    this.search(e.target.textContent);
+    this.search(e.target.textContent, e.target.id);
   }
 
   _onKeyPress (e) {
@@ -60,11 +60,30 @@ class Geocoder extends React.Component {
     }
   }
 
-  search (text) {
-    L.esri.Geocoding.geocode().text(text).run(function (err, results, response) {
-      this.setState({ suggestions: [] });
-      this.props.onSearch(results.results[0].bounds);
-    }.bind(this));
+  search (text, magicKey) {
+    if (magicKey) {
+      // can not contain magicKey into parameters of L.esri.Geocoding.geocode()..
+      const geocodeUrl = 'https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/find';
+      L.esri.request(geocodeUrl, {
+        outSr: 4326,
+        forStorage: false,
+        outFields: '*',
+        maxLocations: 20,
+        text: text,
+        magicKey: magicKey,
+        f: 'json'
+      }, function (error, response) {
+        const ext = response.locations[0].extent;
+        const bounds = [[ext.ymin, ext.xmin], [ext.ymax, ext.xmin]];
+        this.setState({ suggestions: [] });
+        this.props.onSearch(bounds);
+      }.bind(this));
+    } else {
+      L.esri.Geocoding.geocode().text(text).run(function (err, results, response) {
+        this.setState({ suggestions: [] });
+        this.props.onSearch(results.results[0].bounds);
+      }.bind(this));
+    }
   }
 
   render () {
@@ -73,11 +92,11 @@ class Geocoder extends React.Component {
     if (this.state.suggestions.length > 0) {
       const suggestionItems = this.state.suggestions.map(function (s, i) {
         return (
-          <MenuItem onClick={this._onClickSuggestion} key={s.magicKey}>{s.text}</MenuItem>
+          <MenuItem onClick={this._onClickSuggestion} id={s.magicKey} key={s.magicKey}>{s.text}</MenuItem>
         );
       }.bind(this));
       suggestions = (
-        <Dropdown.Menu>
+        <Dropdown.Menu className="react-webmap-geocoder-dropdown-menu">
           {suggestionItems}
         </Dropdown.Menu>
       );
@@ -96,7 +115,7 @@ class Geocoder extends React.Component {
           </InputGroup.Button>
         </InputGroup>
         <style type="text/css">{`
-        .dropdown-menu {
+        .react-webmap-geocoder-dropdown-menu {
             display: block;
             top: 85%;
             left: 15px;
