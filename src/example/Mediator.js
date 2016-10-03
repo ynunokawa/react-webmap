@@ -23,6 +23,7 @@ import { Navbar, Nav, NavItem, Grid, Row, Col } from 'react-bootstrap';
 import MapView from './mapview/MapView';
 import HomeButton from './reactors/HomeButton/HomeButton';
 import Geocoder from './reactors/Geocoder/Geocoder';
+import Bookmarks from './reactors/Bookmarks/Bookmarks';
 import LayerList from './reactors/LayerList/LayerList';
 import ListGroups from './reactors/ListGroups/ListGroups';
 
@@ -175,6 +176,15 @@ class Mediator extends React.Component {
                 center={this.state.initialCenter}
                 zoom={this.state.initialZoom}
                 onGetHome={this.setView}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={12} md={12}>
+              <h4><code>&lt;Bookmarks /&gt;</code></h4>
+              <Bookmarks
+                bookmarks={this.state.bookmarks} 
+                onClickBookmark={this.fitBounds}
               />
             </Col>
           </Row>

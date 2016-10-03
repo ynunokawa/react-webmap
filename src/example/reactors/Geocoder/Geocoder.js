@@ -96,7 +96,7 @@ class Geocoder extends React.Component {
         );
       }.bind(this));
       suggestions = (
-        <Dropdown.Menu>
+        <Dropdown.Menu className="react-webmap-geocoder-dropdown-menu">
           {suggestionItems}
         </Dropdown.Menu>
       );
@@ -115,7 +115,7 @@ class Geocoder extends React.Component {
           </InputGroup.Button>
         </InputGroup>
         <style type="text/css">{`
-        .dropdown-menu {
+        .react-webmap-geocoder-dropdown-menu {
             display: block;
             top: 85%;
             left: 15px;
