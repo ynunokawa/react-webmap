@@ -19,7 +19,7 @@
 // THE SOFTWARE.
 
 import React from 'react';
-import Mediator from './Mediator';
+import Mediator from '../lib/Mediator';
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem, Grid, Row, Col } from 'react-bootstrap';
 import { MapView, HomeButton, Geocoder, Bookmarks, LayerList, ListGroups, Showcase, TreemapChart } from '../';
 
@@ -214,6 +214,8 @@ class App extends Mediator {
                 fields={this.state.treemapChart.fields}
                 height={300}
                 width={300}
+                onMouseoverChart={this.highlightFeature}
+                onMouseoutChart={this.highlightFeature}
               />
             </Col>
           </Row>

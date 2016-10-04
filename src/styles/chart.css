@@ -1,6 +1,12 @@
 .rv-treemap__leaf {
   position: absolute;
   overflow: hidden;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+.rt-treemap__leaf:hover {
+  border: solid 2px #fff;
+  opacity: 0.8;
 }
 .rv-treemap {
   position: relative;
