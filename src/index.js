@@ -28,3 +28,4 @@ export { default as Bookmarks } from './lib/reactors/Bookmarks/Bookmarks';
 export { default as LayerList } from './lib/reactors/LayerList/LayerList';
 export { default as ListGroups } from './lib/reactors/ListGroups/ListGroups';
 export { default as Showcase } from './lib/reactors/Showcase/Showcase';
+export { default as TreemapChart} from './lib/reactors/TreemapChart/TreemapChart';

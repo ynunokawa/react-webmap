@@ -26,6 +26,7 @@ import HomeButton from './reactors/HomeButton/HomeButton';
 import Geocoder from './reactors/Geocoder/Geocoder';
 import Bookmarks from './reactors/Bookmarks/Bookmarks';
 import LayerList from './reactors/LayerList/LayerList';
+import TreemapChart from './reactors/TreemapChart/TreemapChart';
 import ListGroups from './reactors/ListGroups/ListGroups';
 import Showcase from './reactors/Showcase/Showcase';
 
@@ -50,7 +51,12 @@ class App extends Mediator {
       image: '画像',
       imageUrlPrefix: 'https://muxlab.github.io/map-effects-100/data/img/',
       sort: 'NO_'
-    }
+    };
+    const treemapChartLayerIndex = 6;
+    const treemapChartFields = {
+      name: 'SIKUCHOSON',
+      quantity: 'H27GOKEI'
+    };
 
     this.setState({
       listGroups: {
@@ -60,6 +66,10 @@ class App extends Mediator {
       showcase: {
         layer: this.state.webmap.layers[showcaseLayerIndex],
         layoutFields: showcaseLayoutFields
+      },
+      treemapChart: {
+        layer: this.state.webmap.layers[treemapChartLayerIndex],
+        fields: treemapChartFields
       }
     });
   }
@@ -117,9 +127,10 @@ class App extends Mediator {
                 <MenuItem eventKey={2.1} href="#homebutton">HomeButton</MenuItem>
                 <MenuItem eventKey={2.2} href="#bookmarks">Bookmarks</MenuItem>
                 <MenuItem eventKey={2.3} href="#geocoder">Geocoder</MenuItem>
-                <MenuItem eventKey={2.3} href="#layerlist">LayerList</MenuItem>
-                <MenuItem eventKey={2.3} href="#listgroups">ListGroups</MenuItem>
-                <MenuItem eventKey={2.3} href="#showcase">Showcase</MenuItem>
+                <MenuItem eventKey={2.4} href="#layerlist">LayerList</MenuItem>
+                <MenuItem eventKey={2.5} href="#listgroups">ListGroups</MenuItem>
+                <MenuItem eventKey={2.6} href="#showcase">Showcase</MenuItem>
+                <MenuItem eventKey={2.7} href="#treemapchart">TreemapChart</MenuItem>
               </NavDropdown>
             </Nav>
           </Navbar.Collapse>
@@ -196,9 +207,20 @@ class App extends Mediator {
                 layer={this.state.showcase.layer}
                 layoutFields={this.state.showcase.layoutFields}
                 mapState={this.state.mapState}
-                onClickThumbnail={this.setView} 
-                onMouseoverThumbnail={this.highlightFeature} 
+                onClickThumbnail={this.setView}
+                onMouseoverThumbnail={this.highlightFeature}
                 onMouseoutThumbnail={this.highlightFeature}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={12} md={12}>
+              <h3 id="treemapchart"><code>&lt;TreemapChart /&gt;</code></h3>
+              <TreemapChart
+                layer={this.state.treemapChart.layer}
+                fields={this.state.treemapChart.fields}
+                height={300}
+                width={300}
               />
             </Col>
           </Row>
