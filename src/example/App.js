@@ -21,14 +21,7 @@
 import React from 'react';
 import Mediator from './Mediator';
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem, Grid, Row, Col } from 'react-bootstrap';
-import MapView from './mapview/MapView';
-import HomeButton from './reactors/HomeButton/HomeButton';
-import Geocoder from './reactors/Geocoder/Geocoder';
-import Bookmarks from './reactors/Bookmarks/Bookmarks';
-import LayerList from './reactors/LayerList/LayerList';
-import TreemapChart from './reactors/TreemapChart/TreemapChart';
-import ListGroups from './reactors/ListGroups/ListGroups';
-import Showcase from './reactors/Showcase/Showcase';
+import { MapView, HomeButton, Geocoder, Bookmarks, LayerList, ListGroups, Showcase, TreemapChart } from '../';
 
 class App extends Mediator {
   constructor (props) {
