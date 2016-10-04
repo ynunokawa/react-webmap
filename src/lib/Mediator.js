@@ -85,6 +85,14 @@ class Mediator extends React.Component {
           strokeWidth: 0
         }
       });
+      this.highlightStyle = {
+        className: 'react-webmap-highlight-style',
+        color: '#fff',
+        weight: 4,
+        opacity: 0.6,
+        fillOpacity: 0.7,
+        fillColor: '#fff'
+      };
   }
 
   _initMapEventListeners () {
@@ -122,6 +130,8 @@ class Mediator extends React.Component {
         bookmarks: webmap.bookmarks,
         portalItem: webmap.portalItem
       });
+      map.createPane('highlight');
+      map.getPane('highlight').style.zIndex = 650;
       this._initMapEventListeners();
       this.setView = this.setView.bind(this);
       this.fitBounds = this.fitBounds.bind(this);
@@ -154,6 +164,7 @@ class Mediator extends React.Component {
     const map = this.state.map;
     const prevHighlight = this.highlight;
     const highlightIcon = this.highlightIcon;
+    const highlightStyle = this.highlightStyle;
 
     if (prevHighlight !== null) {
       map.removeLayer(prevHighlight);
@@ -161,11 +172,15 @@ class Mediator extends React.Component {
 
     if (feature !== null) {
       const highlight = L.geoJson(feature, {
+        pane: 'highlight',
         onEachFeature: function (feature, layer) {
-          layer.setIcon(highlightIcon);
+          if (feature.geometry.type === 'Point') {
+            layer.setIcon(highlightIcon);
+          } else {
+            layer.setStyle(highlightStyle);
+          }
         }
       });
-      console.log(highlight);
       map.addLayer(highlight);
       this.highlight = highlight;
     }

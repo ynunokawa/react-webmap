@@ -24,6 +24,29 @@ import { Treemap } from 'react-vis';
 class TreemapChart extends React.Component {
   constructor (props) {
       super(props);
+      this.layer = null
+      this._onMouseoverChart = this._onMouseoverChart.bind(this);
+      this._onMouseoutChart = this._onMouseoutChart.bind(this);
+  }
+
+  _onMouseoverChart (e) {
+    console.log(e.target.children);
+    if (e.target.children.length === 1) {
+      const name = e.target.children[0].textContent;
+      const layer = this.layer;
+      const fields = this.props.fields;
+      let feature = null;
+      layer.eachFeature(function (l) {
+        if (l.feature.properties[fields.name] === name) {
+          feature = l.feature;
+        }
+      });
+      this.props.onMouseoverChart(feature);
+    }
+  }
+
+  _onMouseoutChart () {
+    this.props.onMouseoutChart(null);
   }
 
   render () {
@@ -39,8 +62,9 @@ class TreemapChart extends React.Component {
       Object.keys(layer.layer._layers).map(function (k) {
         if (layer.layer._layers[k]._cache !== undefined) {
           lyr = layer.layer._layers[k];
+          this.layer = lyr;
         }
-      });
+      }.bind(this));
       if (lyr !== null) {
         lyr.eachFeature(function (l) {
           features.push(l.feature);
@@ -50,7 +74,6 @@ class TreemapChart extends React.Component {
         return b.properties[fields.quantity] - a.properties[fields.quantity];
       });
     }
-    console.log(features);
 
     const children = features.map(function (f, i) {
       const ratio = f.properties[fields.quantity] / features[0].properties[fields.quantity];
@@ -60,7 +83,6 @@ class TreemapChart extends React.Component {
         color: (1 - ratio) * 10,
       }
     });
-    console.log(children);
 
     const data = {
       title: fields.quantity,
@@ -69,12 +91,14 @@ class TreemapChart extends React.Component {
     }
 
     return (
+      <div onMouseOver={this._onMouseoverChart} onMouseOut={this._onMouseoutChart}>
       <Treemap
         title={layer.title}
         width={width}
         height={height}
         data={data}
       />
+      </div>
     );
   }
 }
@@ -83,7 +107,14 @@ TreemapChart.propTypes = {
   layer: React.PropTypes.object,
   fields: React.PropTypes.object,
   width: React.PropTypes.number,
-  height: React.PropTypes.number
+  height: React.PropTypes.number,
+  onMouseoverChart: React.PropTypes.func,
+  onMouseoutChart: React.PropTypes.func
+};
+
+TreemapChart.defaultProps = {
+  onMouseoverChart: function () {},
+  onMouseoutChart: function () {}
 };
 
 TreemapChart.displayName = 'TreemapChart';

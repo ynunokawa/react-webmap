@@ -280,15 +280,34 @@
   animation-name: react-webmap-highlight-fadein;
   animation-iteration-count: 1; }
 
+.react-webmap-highlight-style {
+  animation-duration: 0.2s;
+  animation-name: react-webmap-highlight-path-fadein;
+  animation-iteration-count: 1; }
+
 @keyframes react-webmap-highlight-fadein {
   0% {
     opacity: 0; }
   100% {
     opacity: 0.7; } }
 
+@keyframes react-webmap-highlight-path-fadein {
+  0% {
+    opacity: 0.5;
+    fill-opacity: 0.5; }
+  100% {
+    opacity: 0.8;
+    fill-opacity: 0.8; } }
+
 .rv-treemap__leaf {
   position: absolute;
-  overflow: hidden; }
+  overflow: hidden;
+  transition: all 0.3s;
+  cursor: pointer; }
+
+.rt-treemap__leaf:hover {
+  border: solid 2px #fff;
+  opacity: 0.8; }
 
 .rv-treemap {
   position: relative;
