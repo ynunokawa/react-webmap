@@ -19,19 +19,15 @@
 // THE SOFTWARE.
 
 import React from 'react';
-import { Navbar, Nav, NavItem, Grid, Row, Col } from 'react-bootstrap';
-import MapView from './mapview/MapView';
-import HomeButton from './reactors/HomeButton/HomeButton';
-import Geocoder from './reactors/Geocoder/Geocoder';
-import Bookmarks from './reactors/Bookmarks/Bookmarks';
-import LayerList from './reactors/LayerList/LayerList';
-import ListGroups from './reactors/ListGroups/ListGroups';
-import Showcase from './reactors/Showcase/Showcase';
 
 class Mediator extends React.Component {
   constructor (props) {
       super(props);
       this.state = {
+        isLoaded: {
+          webmap: false,
+          metadata: false
+        },
         webmap: {},
         map: {},
         mapState: {
@@ -88,6 +84,9 @@ class Mediator extends React.Component {
     const webmap = L.esri.webMap(mapid, { map: map });
     webmap.on('load', function () {
       this.setState({
+        isLoaded: {
+          webmap: true
+        },
         webmap: webmap,
         map: map,
         mapState: {
@@ -103,11 +102,13 @@ class Mediator extends React.Component {
       this._initMapEventListeners();
       this.setView = this.setView.bind(this);
       this.fitBounds = this.fitBounds.bind(this);
-      this.readyComponents();
     }.bind(this));
     webmap.on('metadataLoad', function () {
       setTimeout(function () {
         this.setState({
+          isLoaded: {
+            metadata: true
+          },
           initialCenter: [map.getCenter().lat, map.getCenter().lng],
           initialZoom: map.getZoom()
         });
@@ -125,37 +126,6 @@ class Mediator extends React.Component {
     map.fitBounds(bounds);
   }
 
-  // You can 
-  readyComponents () {
-    const listGroupsLayerIndex = 2;
-    const listGroupsLayoutFields = {
-      type: '種別',
-      typeValues: ['認可保育所', '認証保育所（A型）', '認証保育所（B型）'],
-      name: '施設名',
-      label: '定員',
-      sort: '定員'
-    };
-    const showcaseLayerIndex = 4;
-    const showcaseLayoutFields = {
-      name: '場所名',
-      description: '説明',
-      image: '画像',
-      imageUrlPrefix: 'https://muxlab.github.io/map-effects-100/data/img/',
-      sort: 'NO_'
-    }
-
-    this.setState({
-      listGroups: {
-        layer: this.state.webmap.layers[listGroupsLayerIndex],
-        layoutFields: listGroupsLayoutFields
-      },
-      showcase: {
-        layer: this.state.webmap.layers[showcaseLayerIndex],
-        layoutFields: showcaseLayoutFields
-      }
-    });
-  }
-
   componentDidMount () {
     const map = L.map('react-esri-map', { center: [35, 139], zoom: 5 });
     this._initWebMap(map, this.props.mapid);
@@ -167,109 +137,6 @@ class Mediator extends React.Component {
       map.removeLayer(l);
     });
     this._initWebMap(map, nextProps.mapid);
-  }
-
-  render () {
-    return (
-      <div>
-        <a href="https://github.com/ynunokawa/react-webmap"><img style={{position: 'absolute', top: 0, right: 0, border: 0, zIndex: 99999}} src="https://camo.githubusercontent.com/652c5b9acfaddf3a9c326fa6bde407b87f7be0f4/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6f72616e67655f6666373630302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"></img></a>
-        <Navbar>
-          <Navbar.Header>
-            <Navbar.Brand>
-              <a href="#">React WebMap</a>
-            </Navbar.Brand>
-            <Navbar.Toggle />
-          </Navbar.Header>
-          <Navbar.Collapse>
-            <Nav>
-              <NavItem eventKey={1} href="#mediator">Mediator</NavItem>
-              <NavItem eventKey={2} href="#mapview">MapView</NavItem>
-              <NavItem eventKey={3} href="#reactors">Reactors</NavItem>
-            </Nav>
-          </Navbar.Collapse>
-        </Navbar>
-        <style type="text/css">{`
-        .row {
-            margin-bottom: 20px;
-        }
-        `}</style>
-        <Grid>
-          <Row>
-            <Col xs={12} md={12}>
-              <h1 id="mediator">Mediator</h1>
-              <h4><code>&lt;Mediator /&gt;</code></h4>
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={12} md={12}>
-              <h3 id="mapview">MapView</h3>
-              <h4><code>&lt;MapView /&gt;</code></h4>
-              <MapView />
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={12} md={12}>
-              <h3 id="reactors">Reactors</h3>
-              <h4><code>&lt;HomeButton /&gt;</code></h4>
-              <HomeButton
-                center={this.state.initialCenter}
-                zoom={this.state.initialZoom}
-                onGetHome={this.setView}
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={12} md={12}>
-              <h4><code>&lt;Bookmarks /&gt;</code></h4>
-              <Bookmarks
-                bookmarks={this.state.bookmarks} 
-                onClickBookmark={this.fitBounds}
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={12} md={12}>
-              <h4><code>&lt;Geocoder /&gt;</code></h4>
-              <Geocoder
-                onSearch={this.fitBounds}
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={12} md={12}>
-              <h4><code>&lt;LayerList /&gt;</code></h4>
-              <LayerList
-                map={this.state.map}
-                layers={this.state.layers}
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={12} md={12}>
-              <h4><code>&lt;ListGroups /&gt;</code></h4>
-              <ListGroups
-                layer={this.state.listGroups.layer}
-                layoutFields={this.state.listGroups.layoutFields}
-                mapState={this.state.mapState}
-                filter={true}
-                onClickList={this.setView}
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={12} md={12}>
-              <h4><code>&lt;Showcase /&gt;</code></h4>
-              <Showcase
-                layer={this.state.showcase.layer}
-                layoutFields={this.state.showcase.layoutFields}
-                mapState={this.state.mapState}
-                onClickThumbnail={this.setView}
-              />
-            </Col>
-          </Row>
-        </Grid>
-      </div>
-    );
   }
 }
 
