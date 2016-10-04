@@ -22,7 +22,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import document from 'global/document';
 
-import Mediator from './Mediator';
+import App from './App';
 
 import { isReactDOMSupported } from '../lib/utils/react-utils';
 
@@ -37,7 +37,7 @@ urlParams.forEach(function (urlParam) {
 
 const appContents = (
   <main>
-    <Mediator 
+    <App 
       mapid={mapid} 
     />
   </main>
