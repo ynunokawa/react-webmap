@@ -60,6 +60,13 @@ class Mediator extends React.Component {
             imageUrlPrefix: '',
             sort: ''
           }
+        },
+        treemapChart: {
+          layer: {},
+          fields: {
+            name: '',
+            quantity: ''
+          }
         }
       };
       this.highlight = null;

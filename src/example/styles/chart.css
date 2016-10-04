@@ -1,0 +1,8 @@
+.rv-treemap__leaf {
+  position: absolute;
+  overflow: hidden;
+}
+.rv-treemap {
+  position: relative;
+  font-size: 10px;
+}
