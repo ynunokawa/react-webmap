@@ -62,6 +62,22 @@ class Mediator extends React.Component {
           }
         }
       };
+      this.highlight = null;
+      this.highlightIcon = L.vectorIcon({
+        className: 'react-webmap-highlight-icon',
+        svgHeight: 12,
+        svgWidth: 12,
+        type: 'circle',
+        shape: {
+          r: '6',
+          cx: '6',
+          cy: '6'
+        },
+        style: {
+          fill: '#ff6664',
+          strokeWidth: 0
+        }
+      });
   }
 
   _initMapEventListeners () {
@@ -102,6 +118,7 @@ class Mediator extends React.Component {
       this._initMapEventListeners();
       this.setView = this.setView.bind(this);
       this.fitBounds = this.fitBounds.bind(this);
+      this.highlightFeature = this.highlightFeature.bind(this);
     }.bind(this));
     webmap.on('metadataLoad', function () {
       setTimeout(function () {
@@ -124,6 +141,27 @@ class Mediator extends React.Component {
   fitBounds (bounds) {
     const map = this.state.map;
     map.fitBounds(bounds);
+  }
+
+  highlightFeature (feature) {
+    const map = this.state.map;
+    const prevHighlight = this.highlight;
+    const highlightIcon = this.highlightIcon;
+
+    if (prevHighlight !== null) {
+      map.removeLayer(prevHighlight);
+    }
+
+    if (feature !== null) {
+      const highlight = L.geoJson(feature, {
+        onEachFeature: function (feature, layer) {
+          layer.setIcon(highlightIcon);
+        }
+      });
+      console.log(highlight);
+      map.addLayer(highlight);
+      this.highlight = highlight;
+    }
   }
 
   componentDidMount () {

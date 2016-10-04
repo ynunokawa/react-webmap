@@ -60,6 +60,8 @@ class Showcase extends React.Component {
             feature={features[i]} 
             layoutFields={layoutFields} 
             onClickThumbnail={this.props.onClickThumbnail} 
+            onMouseoverThumbnail={this.props.onMouseoverThumbnail}
+            onMouseoutThumbnail={this.props.onMouseoutThumbnail}
           />
         </Col>
       );
@@ -96,7 +98,9 @@ Showcase.propTypes = {
   layer: React.PropTypes.object,
   layoutFields: React.PropTypes.object,
   mapState: React.PropTypes.object,
-  onClickThumbnail: React.PropTypes.func
+  onClickThumbnail: React.PropTypes.func,
+  onMouseoverThumbnail: React.PropTypes.func,
+  onMouseoutThumbnail: React.PropTypes.func
 };
 
 Showcase.displayName = 'Showcase';

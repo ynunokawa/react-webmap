@@ -25,11 +25,22 @@ class ItemThumbnail extends React.Component {
   constructor (props) {
       super(props);
       this._onClickThumbnail = this._onClickThumbnail.bind(this);
+      this._onMouseoverThumbnail = this._onMouseoverThumbnail.bind(this);
+      this._onMouseoutThumbnail = this._onMouseoutThumbnail.bind(this);
   }
 
   _onClickThumbnail () {
     const feature = this.props.feature;
     this.props.onClickThumbnail(feature.geometry.coordinates.reverse(), 15);
+  }
+
+  _onMouseoverThumbnail () {
+    const feature = this.props.feature;
+    this.props.onMouseoverThumbnail(feature);
+  }
+
+  _onMouseoutThumbnail () {
+    this.props.onMouseoutThumbnail(null);
   }
 
   render () {
@@ -44,7 +55,13 @@ class ItemThumbnail extends React.Component {
     }
 
     return (
-      <Thumbnail src={imageUrl} onClick={this._onClickThumbnail} className="react-webmap-item-thumbnail">
+      <Thumbnail 
+        src={imageUrl} 
+        onClick={this._onClickThumbnail} 
+        onMouseOver={this._onMouseoverThumbnail} 
+        onMouseOut={this._onMouseoutThumbnail}
+        className="react-webmap-item-thumbnail"
+      >
         <h3>{name}</h3>
         <p>{description}</p>
       </Thumbnail>
@@ -55,7 +72,9 @@ class ItemThumbnail extends React.Component {
 ItemThumbnail.propTypes = {
   feature: React.PropTypes.any,
   layoutFields: React.PropTypes.object,
-  onClickThumbnail: React.PropTypes.func
+  onClickThumbnail: React.PropTypes.func,
+  onMouseoverThumbnail: React.PropTypes.func,
+  onMouseoutThumbnail: React.PropTypes.func
 };
 
 ItemThumbnail.displayName = 'ItemThumbnail';

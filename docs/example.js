@@ -398,7 +398,9 @@ var App = function (_Mediator) {
                 layer: this.state.showcase.layer,
                 layoutFields: this.state.showcase.layoutFields,
                 mapState: this.state.mapState,
-                onClickThumbnail: this.setView
+                onClickThumbnail: this.setView,
+                onMouseoverThumbnail: this.highlightFeature,
+                onMouseoutThumbnail: this.highlightFeature
               })
             )
           )
@@ -499,6 +501,22 @@ var Mediator = function (_React$Component) {
         }
       }
     };
+    _this.highlight = null;
+    _this.highlightIcon = L.vectorIcon({
+      className: 'react-webmap-highlight-icon',
+      svgHeight: 12,
+      svgWidth: 12,
+      type: 'circle',
+      shape: {
+        r: '6',
+        cx: '6',
+        cy: '6'
+      },
+      style: {
+        fill: '#ff6664',
+        strokeWidth: 0
+      }
+    });
     return _this;
   }
 
@@ -544,6 +562,7 @@ var Mediator = function (_React$Component) {
         this._initMapEventListeners();
         this.setView = this.setView.bind(this);
         this.fitBounds = this.fitBounds.bind(this);
+        this.highlightFeature = this.highlightFeature.bind(this);
       }.bind(this));
       webmap.on('metadataLoad', function () {
         setTimeout(function () {
@@ -568,6 +587,28 @@ var Mediator = function (_React$Component) {
     value: function fitBounds(bounds) {
       var map = this.state.map;
       map.fitBounds(bounds);
+    }
+  }, {
+    key: 'highlightFeature',
+    value: function highlightFeature(feature) {
+      var map = this.state.map;
+      var prevHighlight = this.highlight;
+      var highlightIcon = this.highlightIcon;
+
+      if (prevHighlight !== null) {
+        map.removeLayer(prevHighlight);
+      }
+
+      if (feature !== null) {
+        var highlight = L.geoJson(feature, {
+          onEachFeature: function onEachFeature(feature, layer) {
+            layer.setIcon(highlightIcon);
+          }
+        });
+        console.log(highlight);
+        map.addLayer(highlight);
+        this.highlight = highlight;
+      }
     }
   }, {
     key: 'componentDidMount',
@@ -1825,6 +1866,8 @@ var ItemThumbnail = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (ItemThumbnail.__proto__ || Object.getPrototypeOf(ItemThumbnail)).call(this, props));
 
     _this._onClickThumbnail = _this._onClickThumbnail.bind(_this);
+    _this._onMouseoverThumbnail = _this._onMouseoverThumbnail.bind(_this);
+    _this._onMouseoutThumbnail = _this._onMouseoutThumbnail.bind(_this);
     return _this;
   }
 
@@ -1833,6 +1876,17 @@ var ItemThumbnail = function (_React$Component) {
     value: function _onClickThumbnail() {
       var feature = this.props.feature;
       this.props.onClickThumbnail(feature.geometry.coordinates.reverse(), 15);
+    }
+  }, {
+    key: '_onMouseoverThumbnail',
+    value: function _onMouseoverThumbnail() {
+      var feature = this.props.feature;
+      this.props.onMouseoverThumbnail(feature);
+    }
+  }, {
+    key: '_onMouseoutThumbnail',
+    value: function _onMouseoutThumbnail() {
+      this.props.onMouseoutThumbnail(null);
     }
   }, {
     key: 'render',
@@ -1849,7 +1903,13 @@ var ItemThumbnail = function (_React$Component) {
 
       return _react2.default.createElement(
         _reactBootstrap.Thumbnail,
-        { src: imageUrl, onClick: this._onClickThumbnail, className: 'react-webmap-item-thumbnail' },
+        {
+          src: imageUrl,
+          onClick: this._onClickThumbnail,
+          onMouseOver: this._onMouseoverThumbnail,
+          onMouseOut: this._onMouseoutThumbnail,
+          className: 'react-webmap-item-thumbnail'
+        },
         _react2.default.createElement(
           'h3',
           null,
@@ -1870,7 +1930,9 @@ var ItemThumbnail = function (_React$Component) {
 ItemThumbnail.propTypes = {
   feature: _react2.default.PropTypes.any,
   layoutFields: _react2.default.PropTypes.object,
-  onClickThumbnail: _react2.default.PropTypes.func
+  onClickThumbnail: _react2.default.PropTypes.func,
+  onMouseoverThumbnail: _react2.default.PropTypes.func,
+  onMouseoutThumbnail: _react2.default.PropTypes.func
 };
 
 ItemThumbnail.displayName = 'ItemThumbnail';
@@ -1965,7 +2027,9 @@ var Showcase = function (_React$Component) {
           _react2.default.createElement(_ItemThumbnail2.default, {
             feature: features[i],
             layoutFields: layoutFields,
-            onClickThumbnail: this.props.onClickThumbnail
+            onClickThumbnail: this.props.onClickThumbnail,
+            onMouseoverThumbnail: this.props.onMouseoverThumbnail,
+            onMouseoutThumbnail: this.props.onMouseoutThumbnail
           })
         );
       }.bind(this));
@@ -1994,7 +2058,9 @@ Showcase.propTypes = {
   layer: _react2.default.PropTypes.object,
   layoutFields: _react2.default.PropTypes.object,
   mapState: _react2.default.PropTypes.object,
-  onClickThumbnail: _react2.default.PropTypes.func
+  onClickThumbnail: _react2.default.PropTypes.func,
+  onMouseoverThumbnail: _react2.default.PropTypes.func,
+  onMouseoutThumbnail: _react2.default.PropTypes.func
 };
 
 Showcase.displayName = 'Showcase';

@@ -273,3 +273,15 @@
   margin-left: -4px;
   border-width: 4px 4px 0;
   border-top-color: #6c6c6c; }
+
+.react-webmap-highlight-icon {
+  opacity: 0.7;
+  animation-duration: 0.5s;
+  animation-name: react-webmap-highlight-fadein;
+  animation-iteration-count: 1; }
+
+@keyframes react-webmap-highlight-fadein {
+  0% {
+    opacity: 0; }
+  100% {
+    opacity: 0.7; } }
