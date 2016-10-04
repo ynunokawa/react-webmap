@@ -196,7 +196,9 @@ class App extends Mediator {
                 layer={this.state.showcase.layer}
                 layoutFields={this.state.showcase.layoutFields}
                 mapState={this.state.mapState}
-                onClickThumbnail={this.setView}
+                onClickThumbnail={this.setView} 
+                onMouseoverThumbnail={this.highlightFeature} 
+                onMouseoutThumbnail={this.highlightFeature}
               />
             </Col>
           </Row>
