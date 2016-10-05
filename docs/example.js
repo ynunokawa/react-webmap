@@ -409,8 +409,10 @@ var App = function (_Mediator) {
                 layer: this.state.barChart.layer,
                 fields: this.state.barChart.fields,
                 nameField: this.state.barChart.nameField,
-                height: 300,
-                width: 180,
+                quantityLabel: "人口（万人）",
+                denominator: 10000,
+                height: 500,
+                legendWidth: 100,
                 onMouseoverChart: this.highlightFeature,
                 onMouseoutChart: this.highlightFeature
               })
@@ -1026,6 +1028,8 @@ var BarChart = function (_React$Component) {
     _this.layer = null;
     _this._nearestXHandler = _this._nearestXHandler.bind(_this);
     _this._legendClickHandler = _this._legendClickHandler.bind(_this);
+    _this._mouseLeaveHandler = _this._mouseLeaveHandler.bind(_this);
+    _this._formatCrosshairTitle = _this._formatCrosshairTitle.bind(_this);
     _this._formatCrosshairItems = _this._formatCrosshairItems.bind(_this);
     return _this;
   }
@@ -1062,8 +1066,10 @@ var BarChart = function (_React$Component) {
   }, {
     key: '_formatCrosshairTitle',
     value: function _formatCrosshairTitle(values) {
+      var nameField = this.props.nameField;
+
       return {
-        title: 'X',
+        title: nameField,
         value: values[0].x
       };
     }
@@ -1093,6 +1099,7 @@ var BarChart = function (_React$Component) {
       var layer = nextProps.layer;
       var fields = nextProps.fields;
       var nameField = nextProps.nameField;
+      var denominator = nextProps.denominator || 1;
       var features = [];
       var lyr = null;
 
@@ -1110,13 +1117,13 @@ var BarChart = function (_React$Component) {
             });
           }
           features = features.sort(function (a, b) {
-            return b.properties[fields[0]] - a.properties[fields[0]];
+            return a.properties[fields[0]] - b.properties[fields[0]];
           });
         }
 
         var series = fields.map(function (f, i) {
           var data = features.map(function (feature, index) {
-            return { x: feature.properties[nameField], y: feature.properties[f] };
+            return { x: feature.properties[nameField], y: feature.properties[f] / denominator };
           });
           return {
             title: f,
@@ -1143,6 +1150,11 @@ var BarChart = function (_React$Component) {
       var _state = this.state;
       var series = _state.series;
       var crosshairValues = _state.crosshairValues;
+      var _props = this.props;
+      var legendWidth = _props.legendWidth;
+      var height = _props.height;
+      var nameField = _props.nameField;
+      var quantityLabel = _props.quantityLabel;
 
 
       return _react2.default.createElement(
@@ -1153,7 +1165,7 @@ var BarChart = function (_React$Component) {
           { className: 'react-webmap-barchart-legend' },
           _react2.default.createElement(_reactVis.DiscreteColorLegend, {
             onItemClick: this._legendClickHandler,
-            width: 100,
+            width: legendWidth,
             items: series
           })
         ),
@@ -1166,10 +1178,10 @@ var BarChart = function (_React$Component) {
               xType: 'ordinal',
               animation: true,
               onMouseLeave: this._mouseLeaveHandler,
-              height: 500 },
+              height: height },
             _react2.default.createElement(_reactVis.HorizontalGridLines, null),
             _react2.default.createElement(_reactVis.XAxis, { tickLabelAngle: -45 }),
-            _react2.default.createElement(_reactVis.YAxis, null),
+            _react2.default.createElement(_reactVis.YAxis, { title: quantityLabel }),
             series.map(function (s, i) {
               return _react2.default.createElement(_reactVis.VerticalBarSeries, _extends({
                 data: s.data,
@@ -1194,7 +1206,9 @@ BarChart.propTypes = {
   layer: _react2.default.PropTypes.object,
   fields: _react2.default.PropTypes.array,
   nameField: _react2.default.PropTypes.string,
-  width: _react2.default.PropTypes.number,
+  quantityLabel: _react2.default.PropTypes.string,
+  denominator: _react2.default.PropTypes.number,
+  legendWidth: _react2.default.PropTypes.number,
   height: _react2.default.PropTypes.number,
   onMouseoverChart: _react2.default.PropTypes.func,
   onMouseoutChart: _react2.default.PropTypes.func

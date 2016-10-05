@@ -32,6 +32,8 @@ class BarChart extends React.Component {
       this.layer = null
       this._nearestXHandler = this._nearestXHandler.bind(this);
       this._legendClickHandler = this._legendClickHandler.bind(this);
+      this._mouseLeaveHandler = this._mouseLeaveHandler.bind(this);
+      this._formatCrosshairTitle = this._formatCrosshairTitle.bind(this);
       this._formatCrosshairItems = this._formatCrosshairItems.bind(this);
   }
 
@@ -53,19 +55,20 @@ class BarChart extends React.Component {
     this.props.onMouseoverChart(feature);
   }
 
-  _mouseLeaveHandler() {
+  _mouseLeaveHandler () {
     this.setState({crosshairValues: []});
     this.props.onMouseoutChart(null);
   }
 
-  _formatCrosshairTitle(values) {
+  _formatCrosshairTitle (values) {
+    const {nameField} = this.props;
     return {
-      title: 'X',
+      title: nameField,
       value: values[0].x
     };
   }
 
-  _formatCrosshairItems(values) {
+  _formatCrosshairItems (values) {
     const {series} = this.state;
     return values.map((v, i) => {
       return {
@@ -85,6 +88,7 @@ class BarChart extends React.Component {
     const layer = nextProps.layer;
     const fields = nextProps.fields;
     const nameField = nextProps.nameField;
+    const denominator = nextProps.denominator || 1;
     let features = [];
     let lyr = null;
 
@@ -102,13 +106,13 @@ class BarChart extends React.Component {
           });
         }
         features = features.sort(function (a, b) {
-          return b.properties[fields[0]] - a.properties[fields[0]];
+          return a.properties[fields[0]] - b.properties[fields[0]];
         });
       }
 
       const series = fields.map(function (f, i) {
         const data = features.map(function (feature, index) {
-          return { x: feature.properties[nameField], y: feature.properties[f] };
+          return { x: feature.properties[nameField], y: feature.properties[f] / denominator };
         });
         return {
           title: f,
@@ -131,13 +135,14 @@ class BarChart extends React.Component {
   render () {
     const FlexibleXYPlot = this.FlexibleXYPlot;
     const {series, crosshairValues} = this.state;
+    const {legendWidth, height, nameField, quantityLabel} = this.props;
 
     return (
       <div>
         <div className="react-webmap-barchart-legend">
           <DiscreteColorLegend
             onItemClick={this._legendClickHandler}
-            width={100}
+            width={legendWidth}
             items={series}
           />
         </div>
@@ -146,10 +151,10 @@ class BarChart extends React.Component {
             xType="ordinal"
             animation={true}
             onMouseLeave={this._mouseLeaveHandler}
-            height={500}>
+            height={height}>
             <HorizontalGridLines />
             <XAxis tickLabelAngle={-45} />
-            <YAxis />
+            <YAxis title={quantityLabel} />
             {series.map(function (s, i) {
               return (
                 <VerticalBarSeries 
@@ -175,7 +180,9 @@ BarChart.propTypes = {
   layer: React.PropTypes.object,
   fields: React.PropTypes.array,
   nameField: React.PropTypes.string,
-  width: React.PropTypes.number,
+  quantityLabel: React.PropTypes.string,
+  denominator: React.PropTypes.number,
+  legendWidth: React.PropTypes.number,
   height: React.PropTypes.number,
   onMouseoverChart: React.PropTypes.func,
   onMouseoutChart: React.PropTypes.func
