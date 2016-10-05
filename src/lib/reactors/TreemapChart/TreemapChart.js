@@ -30,7 +30,6 @@ class TreemapChart extends React.Component {
   }
 
   _onMouseoverChart (e) {
-    console.log(e.target.children);
     if (e.target.children.length === 1) {
       const name = e.target.children[0].textContent;
       const layer = this.layer;
