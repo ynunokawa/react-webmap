@@ -193,6 +193,11 @@ var App = function (_Mediator) {
                 { eventKey: 2, title: 'Reactors', id: 'basic-nav-dropdown' },
                 _react2.default.createElement(
                   _reactBootstrap.MenuItem,
+                  { header: true },
+                  'Basic'
+                ),
+                _react2.default.createElement(
+                  _reactBootstrap.MenuItem,
                   { eventKey: 2.1, href: '#homebutton' },
                   'HomeButton'
                 ),
@@ -211,6 +216,12 @@ var App = function (_Mediator) {
                   { eventKey: 2.4, href: '#layerlist' },
                   'LayerList'
                 ),
+                _react2.default.createElement(_reactBootstrap.MenuItem, { divider: true }),
+                _react2.default.createElement(
+                  _reactBootstrap.MenuItem,
+                  { header: true },
+                  'Visualization'
+                ),
                 _react2.default.createElement(
                   _reactBootstrap.MenuItem,
                   { eventKey: 2.5, href: '#barchart' },
@@ -220,6 +231,12 @@ var App = function (_Mediator) {
                   _reactBootstrap.MenuItem,
                   { eventKey: 2.6, href: '#treemapchart' },
                   'TreemapChart'
+                ),
+                _react2.default.createElement(_reactBootstrap.MenuItem, { divider: true }),
+                _react2.default.createElement(
+                  _reactBootstrap.MenuItem,
+                  { header: true },
+                  'Listing / Filtering'
                 ),
                 _react2.default.createElement(
                   _reactBootstrap.MenuItem,

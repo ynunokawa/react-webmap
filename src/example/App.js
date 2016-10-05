@@ -157,12 +157,17 @@ class App extends Mediator {
             <Nav>
               <NavItem eventKey={1} href="#mapview">MapView</NavItem>
               <NavDropdown eventKey={2} title="Reactors" id="basic-nav-dropdown">
+                <MenuItem header>Basic</MenuItem>
                 <MenuItem eventKey={2.1} href="#homebutton">HomeButton</MenuItem>
                 <MenuItem eventKey={2.2} href="#bookmarks">Bookmarks</MenuItem>
                 <MenuItem eventKey={2.3} href="#geocoder">Geocoder</MenuItem>
                 <MenuItem eventKey={2.4} href="#layerlist">LayerList</MenuItem>
+                <MenuItem divider/>
+                <MenuItem header>Visualization</MenuItem>
                 <MenuItem eventKey={2.5} href="#barchart">BarChart</MenuItem>
                 <MenuItem eventKey={2.6} href="#treemapchart">TreemapChart</MenuItem>
+                <MenuItem divider/>
+                <MenuItem header>Listing / Filtering</MenuItem>
                 <MenuItem eventKey={2.7} href="#listgroups">ListGroups</MenuItem>
                 <MenuItem eventKey={2.8} href="#showcase">Showcase</MenuItem>
               </NavDropdown>
