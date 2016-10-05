@@ -130,8 +130,7 @@ var App = function (_Mediator) {
               _react2.default.createElement(
                 'a',
                 { href: '#' },
-                _react2.default.createElement(_reactBootstrap.Image, { src: 'img/icon.png' }),
-                ' React WebMap'
+                'React WebMap'
               )
             ),
             _react2.default.createElement(_reactBootstrap.Navbar.Toggle, null)
