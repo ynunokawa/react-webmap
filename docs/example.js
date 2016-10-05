@@ -2438,7 +2438,7 @@ var Showcase = function (_React$Component) {
       var ItemThumbnails = features.map(function (f, i) {
         return _react2.default.createElement(
           _reactBootstrap.Col,
-          { xs: 12, sm: 6, md: 4, key: f.properties[layoutFields.name] + i },
+          { xs: 12, sm: 6, md: 4, lg: 3, key: f.properties[layoutFields.name] + i },
           _react2.default.createElement(_ItemThumbnail2.default, {
             feature: features[i],
             layoutFields: layoutFields,
