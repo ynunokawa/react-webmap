@@ -16,7 +16,7 @@
 
 /* BarChart */
 .react-webmap-barchart {
-    margin-right: 200px;
+    margin-right: 90px;
 }
 .rv-xy-plot {
   color: #c3c3c3;
@@ -79,17 +79,25 @@
   left: 4px;
 }
 .rv-crosshair__inner__content {
-    border-radius: 4px;
-    background: #3A3A48;
-    color: #fff;
-    font-size: 12px;
-    padding: 7px 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+  background: #3A3A48;
+  color: #fff;
+  font-size: 12px;
+  padding: 7px 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 .rv-crosshair__title {
-    font-weight: bold;
-    white-space: nowrap;
+  font-weight: bold;
+  white-space: nowrap;
 }
 .rv-crosshair__item {
-    white-space: nowrap;
+  white-space: nowrap;
+}
+.rv-xy-plot__grid-lines__line {
+  stroke: #e6e6e9;
+}
+.rv-xy-plot__axis__line {
+  stroke-width: 2px;
+  stroke: #e6e6e9;
+  fill: none;
 }

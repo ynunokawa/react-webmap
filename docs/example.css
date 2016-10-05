@@ -316,7 +316,7 @@
 
 /* BarChart */
 .react-webmap-barchart {
-  margin-right: 200px; }
+  margin-right: 90px; }
 
 .rv-xy-plot {
   color: #c3c3c3;
@@ -392,3 +392,11 @@
 
 .rv-crosshair__item {
   white-space: nowrap; }
+
+.rv-xy-plot__grid-lines__line {
+  stroke: #e6e6e9; }
+
+.rv-xy-plot__axis__line {
+  stroke-width: 2px;
+  stroke: #e6e6e9;
+  fill: none; }

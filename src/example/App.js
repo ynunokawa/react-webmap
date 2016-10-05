@@ -229,8 +229,10 @@ class App extends Mediator {
                 layer={this.state.barChart.layer}
                 fields={this.state.barChart.fields} 
                 nameField={this.state.barChart.nameField} 
-                height={300}
-                width={180}
+                quantityLabel={"人口（万人）"}
+                denominator={10000} 
+                height={500}
+                legendWidth={100}
                 onMouseoverChart={this.highlightFeature}
                 onMouseoutChart={this.highlightFeature}
               />
