@@ -245,7 +245,7 @@ class App extends Mediator {
                 layer={this.state.treemapChart.layer}
                 fields={this.state.treemapChart.fields}
                 height={300}
-                width={300}
+                width={window.innerWidth * 0.9}
                 onMouseoverChart={this.highlightFeature}
                 onMouseoutChart={this.highlightFeature}
               />

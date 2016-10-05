@@ -303,12 +303,14 @@
 .rv-treemap__leaf {
   position: absolute;
   overflow: hidden;
-  transition: all 0.3s;
-  cursor: pointer; }
+  padding: 4px;
+  transition: all 0.15s;
+  cursor: pointer;
+  opacity: 1; }
 
-.rt-treemap__leaf:hover {
+.rv-treemap__leaf:hover {
   border: solid 2px #fff;
-  opacity: 0.8; }
+  opacity: 0.7 !important; }
 
 .rv-treemap {
   position: relative;
