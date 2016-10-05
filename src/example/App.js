@@ -21,14 +21,54 @@
 import React from 'react';
 import Mediator from '../lib/Mediator';
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem, Grid, Row, Col } from 'react-bootstrap';
-import { MapView, HomeButton, Geocoder, Bookmarks, LayerList, ListGroups, Showcase, TreemapChart } from '../';
+import { MapView, HomeButton, Geocoder, Bookmarks, LayerList, BarChart, TreemapChart, ListGroups, Showcase } from '../';
 
 class App extends Mediator {
   constructor (props) {
       super(props);
+      this.state.treemapChart = {
+        layer: {},
+        fields: {
+          name: '',
+          quantity: ''
+        }
+      };
+      this.state.barChart = {
+        layer: {},
+        fields: [],
+        nameField: ''
+      };
+      this.state.listGroups = {
+        layer: {},
+        layoutFields: {
+          type: '',
+          typeValues: [],
+          name: '',
+          label: '',
+          sort: ''
+        }
+      };
+      this.state.showcase = {
+        layer: {},
+        layoutFields: {
+          name: '',
+          description: '',
+          image: '',
+          imageUrlPrefix: '',
+          sort: ''
+        }
+      };
   }
 
   readyComponents () {
+    const barChartLayerIndex = 6;
+    const barChartFields = ['H27GOKEI', 'H26GOKEI'];
+    const barChartNameField = 'SIKUCHOSON';
+    const treemapChartLayerIndex = 6;
+    const treemapChartFields = {
+      name: 'SIKUCHOSON',
+      quantity: 'H27GOKEI'
+    };
     const listGroupsLayerIndex = 2;
     const listGroupsLayoutFields = {
       type: '種別',
@@ -45,13 +85,17 @@ class App extends Mediator {
       imageUrlPrefix: 'https://muxlab.github.io/map-effects-100/data/img/',
       sort: 'NO_'
     };
-    const treemapChartLayerIndex = 6;
-    const treemapChartFields = {
-      name: 'SIKUCHOSON',
-      quantity: 'H27GOKEI'
-    };
 
     this.setState({
+      barChart: {
+        layer: this.state.webmap.layers[barChartLayerIndex],
+        fields: barChartFields,
+        nameField: barChartNameField
+      },
+      treemapChart: {
+        layer: this.state.webmap.layers[treemapChartLayerIndex],
+        fields: treemapChartFields
+      },
       listGroups: {
         layer: this.state.webmap.layers[listGroupsLayerIndex],
         layoutFields: listGroupsLayoutFields
@@ -59,10 +103,6 @@ class App extends Mediator {
       showcase: {
         layer: this.state.webmap.layers[showcaseLayerIndex],
         layoutFields: showcaseLayoutFields
-      },
-      treemapChart: {
-        layer: this.state.webmap.layers[treemapChartLayerIndex],
-        fields: treemapChartFields
       }
     });
   }
@@ -121,9 +161,10 @@ class App extends Mediator {
                 <MenuItem eventKey={2.2} href="#bookmarks">Bookmarks</MenuItem>
                 <MenuItem eventKey={2.3} href="#geocoder">Geocoder</MenuItem>
                 <MenuItem eventKey={2.4} href="#layerlist">LayerList</MenuItem>
-                <MenuItem eventKey={2.5} href="#listgroups">ListGroups</MenuItem>
-                <MenuItem eventKey={2.6} href="#showcase">Showcase</MenuItem>
-                <MenuItem eventKey={2.7} href="#treemapchart">TreemapChart</MenuItem>
+                <MenuItem eventKey={2.5} href="#barchart">BarChart</MenuItem>
+                <MenuItem eventKey={2.6} href="#treemapchart">TreemapChart</MenuItem>
+                <MenuItem eventKey={2.7} href="#listgroups">ListGroups</MenuItem>
+                <MenuItem eventKey={2.8} href="#showcase">Showcase</MenuItem>
               </NavDropdown>
             </Nav>
           </Navbar.Collapse>
@@ -183,6 +224,33 @@ class App extends Mediator {
           </Row>
           <Row>
             <Col xs={12} md={12}>
+              <h3 id="barchart"><code>&lt;BarChart /&gt;</code></h3>
+              <BarChart
+                layer={this.state.barChart.layer}
+                fields={this.state.barChart.fields} 
+                nameField={this.state.barChart.nameField} 
+                height={300}
+                width={180}
+                onMouseoverChart={this.highlightFeature}
+                onMouseoutChart={this.highlightFeature}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={12} md={12}>
+              <h3 id="treemapchart"><code>&lt;TreemapChart /&gt;</code></h3>
+              <TreemapChart
+                layer={this.state.treemapChart.layer}
+                fields={this.state.treemapChart.fields}
+                height={300}
+                width={300}
+                onMouseoverChart={this.highlightFeature}
+                onMouseoutChart={this.highlightFeature}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={12} md={12}>
               <h3 id="listgroups"><code>&lt;ListGroups /&gt;</code></h3>
               <ListGroups
                 layer={this.state.listGroups.layer}
@@ -203,19 +271,6 @@ class App extends Mediator {
                 onClickThumbnail={this.setView}
                 onMouseoverThumbnail={this.highlightFeature}
                 onMouseoutThumbnail={this.highlightFeature}
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={12} md={12}>
-              <h3 id="treemapchart"><code>&lt;TreemapChart /&gt;</code></h3>
-              <TreemapChart
-                layer={this.state.treemapChart.layer}
-                fields={this.state.treemapChart.fields}
-                height={300}
-                width={300}
-                onMouseoverChart={this.highlightFeature}
-                onMouseoutChart={this.highlightFeature}
               />
             </Col>
           </Row>

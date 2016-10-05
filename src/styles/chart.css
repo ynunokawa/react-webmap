@@ -1,3 +1,4 @@
+/* TreemapChart */
 .rv-treemap__leaf {
   position: absolute;
   overflow: hidden;
@@ -11,4 +12,84 @@
 .rv-treemap {
   position: relative;
   font-size: 10px;
+}
+
+/* BarChart */
+.react-webmap-barchart {
+    margin-right: 200px;
+}
+.rv-xy-plot {
+  color: #c3c3c3;
+  position: relative;
+}
+.rv-xy-plot__inner {
+    display: block;
+}
+.react-webmap-barchart-legend {
+    position: absolute;
+    text-align: left;
+    right: 0;
+}
+.rv-discrete-color-legend {
+    box-sizing: border-box;
+    overflow-y: auto;
+    font-size: 12px;
+}
+.rv-discrete-color-legend-item.clickable {
+    cursor: pointer;
+}
+.rv-discrete-color-legend-item {
+    color: #3A3A48;
+    border-radius: 1px;
+    padding: 9px 10px;
+}
+.rv-discrete-color-legend {
+    box-sizing: border-box;
+    overflow-y: auto;
+    font-size: 12px;
+}
+.rv-discrete-color-legend-item__color {
+    background: #DCDCDC;
+    display: inline-block;
+    height: 2px;
+    vertical-align: middle;
+    width: 14px;
+}
+.rv-xy-plot__axis__tick > text {
+  font-size: 0.7em;
+}
+.rv-crosshair {
+  position: absolute;
+  font-size: 11px;
+  pointer-events: none;
+}
+.rv-crosshair__line {
+  background: #47d3d9;
+  width: 1px;
+}
+.rv-crosshair__inner {
+  position: absolute;
+  text-align: left;
+  top: 0;
+}
+.rv-crosshair__inner--left {
+  right: 4px;
+}
+.rv-crosshair__inner--right {
+  left: 4px;
+}
+.rv-crosshair__inner__content {
+    border-radius: 4px;
+    background: #3A3A48;
+    color: #fff;
+    font-size: 12px;
+    padding: 7px 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+.rv-crosshair__title {
+    font-weight: bold;
+    white-space: nowrap;
+}
+.rv-crosshair__item {
+    white-space: nowrap;
 }

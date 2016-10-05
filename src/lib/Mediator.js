@@ -40,34 +40,7 @@ class Mediator extends React.Component {
         title: '',
         layers: [],
         bookmarks: [],
-        portalItem: {},
-        listGroups: {
-          layer: {},
-          layoutFields: {
-            type: '',
-            typeValues: [],
-            name: '',
-            label: '',
-            sort: ''
-          }
-        },
-        showcase: {
-          layer: {},
-          layoutFields: {
-            name: '',
-            description: '',
-            image: '',
-            imageUrlPrefix: '',
-            sort: ''
-          }
-        },
-        treemapChart: {
-          layer: {},
-          fields: {
-            name: '',
-            quantity: ''
-          }
-        }
+        portalItem: {}
       };
       this.highlight = null;
       this.highlightIcon = L.vectorIcon({
