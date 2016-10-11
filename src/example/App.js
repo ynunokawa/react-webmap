@@ -61,15 +61,15 @@ class App extends Mediator {
   }
 
   readyComponents () {
-    const barChartLayerIndex = 6;
-    const barChartFields = ['H27GOKEI', 'H26GOKEI'];
-    const barChartNameField = 'SIKUCHOSON';
-    const treemapChartLayerIndex = 6;
+    const barChartLayerIndex = 1;
+    const barChartFields = ['pop_u15', 'pop_o65'];
+    const barChartNameField = 'prefname';
+    const treemapChartLayerIndex = 1;
     const treemapChartFields = {
-      name: 'SIKUCHOSON',
-      quantity: 'H27GOKEI'
+      name: 'prefname',
+      quantity: 'popdense'
     };
-    const listGroupsLayerIndex = 2;
+    const listGroupsLayerIndex = 4;
     const listGroupsLayoutFields = {
       type: '種別',
       typeValues: ['認可保育所', '認証保育所（A型）', '認証保育所（B型）'],
@@ -77,7 +77,7 @@ class App extends Mediator {
       label: '定員',
       sort: '定員'
     };
-    const showcaseLayerIndex = 4;
+    const showcaseLayerIndex = 6;
     const showcaseLayoutFields = {
       name: '場所名',
       description: '説明',
