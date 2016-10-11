@@ -91,15 +91,15 @@ var App = function (_Mediator) {
   _createClass(App, [{
     key: 'readyComponents',
     value: function readyComponents() {
-      var barChartLayerIndex = 6;
-      var barChartFields = ['H27GOKEI', 'H26GOKEI'];
-      var barChartNameField = 'SIKUCHOSON';
-      var treemapChartLayerIndex = 6;
+      var barChartLayerIndex = 1;
+      var barChartFields = ['pop_u15', 'pop_o65'];
+      var barChartNameField = 'prefname';
+      var treemapChartLayerIndex = 1;
       var treemapChartFields = {
-        name: 'SIKUCHOSON',
-        quantity: 'H27GOKEI'
+        name: 'prefname',
+        quantity: 'popdense'
       };
-      var listGroupsLayerIndex = 2;
+      var listGroupsLayerIndex = 4;
       var listGroupsLayoutFields = {
         type: '種別',
         typeValues: ['認可保育所', '認証保育所（A型）', '認証保育所（B型）'],
@@ -107,7 +107,7 @@ var App = function (_Mediator) {
         label: '定員',
         sort: '定員'
       };
-      var showcaseLayerIndex = 4;
+      var showcaseLayerIndex = 6;
       var showcaseLayoutFields = {
         name: '場所名',
         description: '説明',
