@@ -19,13 +19,16 @@
 // THE SOFTWARE.
 
 import React from 'react';
-import Mediator from '../lib/Mediator';
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem, Grid, Row, Col } from 'react-bootstrap';
-import { MapView, HomeButton, Geocoder, Bookmarks, LayerList, BarChart, TreemapChart, ListGroups, Showcase } from '../';
+import { Mediator, MapView, HomeButton, Geocoder, Bookmarks, PolygonLegend, LayerList, BarChart, TreemapChart, ListGroups, Showcase } from '../';
 
 class App extends Mediator {
   constructor (props) {
       super(props);
+      this.state.legend = {
+        layer1: {},
+        layer2: {}
+      };
       this.state.treemapChart = {
         layer: {},
         fields: {
@@ -61,14 +64,18 @@ class App extends Mediator {
   }
 
   readyComponents () {
+    const legendLayerIndexes = [1, 3];
+
     const barChartLayerIndex = 1;
     const barChartFields = ['pop_u15', 'pop_o65'];
     const barChartNameField = 'prefname';
+
     const treemapChartLayerIndex = 1;
     const treemapChartFields = {
       name: 'prefname',
       quantity: 'popdense'
     };
+    
     const listGroupsLayerIndex = 4;
     const listGroupsLayoutFields = {
       type: '種別',
@@ -77,6 +84,7 @@ class App extends Mediator {
       label: '定員',
       sort: '定員'
     };
+
     const showcaseLayerIndex = 6;
     const showcaseLayoutFields = {
       name: '場所名',
@@ -87,6 +95,10 @@ class App extends Mediator {
     };
 
     this.setState({
+      legend: {
+        layer1: this.state.webmap.layers[legendLayerIndexes[0]],
+        layer2: this.state.webmap.layers[legendLayerIndexes[1]]
+      },
       barChart: {
         layer: this.state.webmap.layers[barChartLayerIndex],
         fields: barChartFields,
@@ -161,15 +173,16 @@ class App extends Mediator {
                 <MenuItem eventKey={2.1} href="#homebutton">HomeButton</MenuItem>
                 <MenuItem eventKey={2.2} href="#bookmarks">Bookmarks</MenuItem>
                 <MenuItem eventKey={2.3} href="#geocoder">Geocoder</MenuItem>
-                <MenuItem eventKey={2.4} href="#layerlist">LayerList</MenuItem>
+                <MenuItem eventKey={2.4} href="#legend">Legend</MenuItem>
+                <MenuItem eventKey={2.5} href="#layerlist">LayerList</MenuItem>
                 <MenuItem divider/>
                 <MenuItem header>Visualization</MenuItem>
-                <MenuItem eventKey={2.5} href="#barchart">BarChart</MenuItem>
-                <MenuItem eventKey={2.6} href="#treemapchart">TreemapChart</MenuItem>
+                <MenuItem eventKey={2.6} href="#barchart">BarChart</MenuItem>
+                <MenuItem eventKey={2.7} href="#treemapchart">TreemapChart</MenuItem>
                 <MenuItem divider/>
                 <MenuItem header>Listing / Filtering</MenuItem>
-                <MenuItem eventKey={2.7} href="#listgroups">ListGroups</MenuItem>
-                <MenuItem eventKey={2.8} href="#showcase">Showcase</MenuItem>
+                <MenuItem eventKey={2.8} href="#listgroups">ListGroups</MenuItem>
+                <MenuItem eventKey={2.9} href="#showcase">Showcase</MenuItem>
               </NavDropdown>
             </Nav>
           </Navbar.Collapse>
@@ -215,6 +228,17 @@ class App extends Mediator {
               <h3 id="geocoder"><code>&lt;Geocoder /&gt;</code></h3>
               <Geocoder
                 onSearch={this.fitBounds}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={12} md={12}>
+              <h3 id="legend"><code>&lt;PolygonLegend /&gt;</code></h3>
+              <PolygonLegend
+                layer={this.state.legend.layer1} 
+              />
+              <PolygonLegend
+                layer={this.state.legend.layer2} 
               />
             </Col>
           </Row>

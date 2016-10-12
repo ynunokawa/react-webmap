@@ -29,7 +29,7 @@ class BarChart extends React.Component {
         crosshairValues: []
       };
       this.FlexibleXYPlot = makeWidthFlexible(XYPlot);
-      this.layer = null
+      this.layer = null;
       this._nearestXHandler = this._nearestXHandler.bind(this);
       this._legendClickHandler = this._legendClickHandler.bind(this);
       this._mouseLeaveHandler = this._mouseLeaveHandler.bind(this);
