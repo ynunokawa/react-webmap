@@ -25,6 +25,7 @@ export { default as MapView } from './lib/mapview/MapView';
 export { default as HomeButton } from './lib/reactors/HomeButton/HomeButton';
 export { default as Geocoder } from './lib/reactors/Geocoder/Geocoder';
 export { default as Bookmarks } from './lib/reactors/Bookmarks/Bookmarks';
+export { default as Legend } from './lib/reactors/Legend/Legend';
 export { default as LayerList } from './lib/reactors/LayerList/LayerList';
 export { default as ListGroups } from './lib/reactors/ListGroups/ListGroups';
 export { default as Showcase } from './lib/reactors/Showcase/Showcase';

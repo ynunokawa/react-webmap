@@ -1,8 +1,30 @@
-/*@import "styles/treemap";
-@import "styles/table";
-@import "styles/plot";
-@import "styles/legends";
-@import "styles/radial-chart";*/
+.react-webmap-legend-title {
+  font-weight: bold;
+  margin-top: 20px;
+  margin-bottom: 20px; }
+
+.react-webmap-legend-row {
+  display: table-row; }
+
+.react-webmap-legend-cell {
+  display: table-cell;
+  vertical-align: middle;
+  word-break: break-word;
+  padding: 4px 0; }
+
+.react-webmap-legend-symbol {
+  min-width: 10px;
+  text-align: center; }
+
+.react-webmap-legend-label {
+  padding-left: 7px;
+  padding-right: 7px;
+  max-width: 250px;
+  overflow: hidden;
+  white-space: nowrap;
+  -ms-text-overflow: ellipsis;
+  text-overflow: ellipsis; }
+
 .rc-slider {
   position: relative;
   height: 4px;
