@@ -20,7 +20,7 @@
 
 import React from 'react';
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem, Grid, Row, Col } from 'react-bootstrap';
-import { Mediator, MapView, HomeButton, Geocoder, Bookmarks, PolygonLegend, LayerList, BarChart, TreemapChart, ListGroups, Showcase } from '../';
+import { Mediator, MapView, HomeButton, Geocoder, Bookmarks, Legend, LayerList, BarChart, TreemapChart, ListGroups, Showcase } from '../';
 
 class App extends Mediator {
   constructor (props) {
@@ -233,11 +233,11 @@ class App extends Mediator {
           </Row>
           <Row>
             <Col xs={12} md={12}>
-              <h3 id="legend"><code>&lt;PolygonLegend /&gt;</code></h3>
-              <PolygonLegend
+              <h3 id="legend"><code>&lt;Legend /&gt;</code></h3>
+              <Legend
                 layer={this.state.legend.layer1} 
               />
-              <PolygonLegend
+              <Legend
                 layer={this.state.legend.layer2} 
               />
             </Col>
