@@ -29,3 +29,41 @@
   -ms-text-overflow: ellipsis;
   text-overflow: ellipsis;
 }
+
+.react-webmap-legend-colorramp-borderless {
+  position: relative;
+  width: 34px;
+  height: 120px;
+}
+
+.react-webmap-legend-colorramp {
+  width: 24px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.react-webmap-legend-colorramp-tick {
+  width: 3px;
+  right: 2px;
+  position: absolute;
+  border-top: 1px solid #999999;
+  line-height: 0px;
+  left: auto;
+}
+
+.react-webmap-legend-colorramp-tick-last {
+  margin-top: -1px;
+}
+
+.react-webmap-legend-colorramp-labels {
+  position: relative;
+}
+
+.react-webmap-legend-colorramp-label {
+  position: relative;
+  line-height: 30px;
+  padding-left: 5px;
+  padding-right: 0px;
+  text-align: left;
+  white-space: nowrap;
+}
