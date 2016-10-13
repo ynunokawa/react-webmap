@@ -64,7 +64,7 @@ class App extends Mediator {
   }
 
   readyComponents () {
-    const legendLayerIndexes = [1, 3];
+    const legendLayerIndexes = [1, 2];
 
     const barChartLayerIndex = 1;
     const barChartFields = ['pop_u15', 'pop_o65'];

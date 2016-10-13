@@ -20,6 +20,7 @@
 
 import React from 'react';
 import PolygonSymbol from './PolygonSymbol';
+import ColorRamp from './ColorRamp';
 
 class PolygonLegend extends React.Component {
   constructor (props) {
@@ -60,29 +61,42 @@ class PolygonLegend extends React.Component {
       case 'classBreaks':
         FieldName = (<h5>{renderer.field}</h5>);
         if (renderer.visualVariables !== undefined && renderer.visualVariables.length > 0) {
-          LegendContents = renderer.visualVariables[0].stops.map(function (stop, i) {
+          renderer.visualVariables.forEach(function (v, i) {
+            if (v.type === 'colorInfo') {
+              LegendContents = (
+                <ColorRamp colorInfo={v} />
+              );
+            }
+          });
+        } else {
+          // work in progress..
+          LegendContents = renderer.classBreakInfos.map(function (info, i) {
             const style = {
-              color: this.getColor(stop.color),
-              opacity: this.getOpacity(stop.color[3]),
+              color: this.getColor(info.symbol.color),
+              opacity: this.getOpacity(info.symbol.color[3]),
               outline: {
-                color: this.getColor(renderer.classBreakInfos[0].symbol.outline.color),
-                opacity: this.getOpacity(renderer.classBreakInfos[0].symbol.outline.color[3]),
-                width: String(renderer.classBreakInfos[0].symbol.outline.width)
+                color: this.getColor(info.symbol.outline.color),
+                opacity: this.getOpacity(info.symbol.outline.color[3]),
+                width: String(info.symbol.outline.width)
               }
             };
-            const label = stop.label;
+            const label = info.label;
             return (
               <PolygonSymbol color={style.color} opacity={style.opacity} outlineColor={style.outline.color} outlineOpacity={style.outline.opacity} outlineWidth={style.outline.width} label={label} key={title + renderer.field + i} />
             );
           }.bind(this));
-        } else {
-          // work in progress..
         }
         break;
       case 'uniqueValue':
         FieldName = (<h5>{renderer.field}</h5>);
         if (renderer.visualVariables !== undefined && renderer.visualVariables.length > 0) {
-          // work in progress..
+          renderer.visualVariables.forEach(function (v, i) {
+            if (v.type === 'colorInfo') {
+              LegendContents = (
+                <ColorRamp colorInfo={v} />
+              );
+            }
+          });
         } else {
           LegendContents = renderer.uniqueValueInfos.map(function (info, i) {
             const style = {
