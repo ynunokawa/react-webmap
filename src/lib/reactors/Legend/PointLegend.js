@@ -93,11 +93,15 @@ class PointLegend extends React.Component {
         } else {
           LegendContents = renderer.classBreakInfos.map(function (info, i) {
             const label = info.label;
+            let imageData = info.symbol.url;
+            if (info.symbol.imageData !== undefined) {
+              imageData = 'data:' + info.symbol.contentType + ';base64,' + info.symbol.imageData
+            }
             if (info.symbol.type === 'esriPMS') {
               const style = {
                 height: String(info.symbol.height),
                 width: String(info.symbol.width),
-                imageData: 'data:' + info.symbol.contentType + ';base64,' + info.symbol.imageData || info.symbol.url
+                imageData: imageData
               };
               return (
                 <PointPictureSymbol height={style.height} width={style.width} imageData={style.imageData} label={label} key={title + renderer.field + i} />
@@ -121,11 +125,15 @@ class PointLegend extends React.Component {
         } else {
           LegendContents = renderer.uniqueValueInfos.map(function (info, i) {
             const label = info.label;
+            let imageData = info.symbol.url;
+            if (info.symbol.imageData !== undefined) {
+              imageData = 'data:' + info.symbol.contentType + ';base64,' + info.symbol.imageData
+            }
             if (info.symbol.type === 'esriPMS') {
               const style = {
                 height: String(info.symbol.height),
                 width: String(info.symbol.width),
-                imageData: 'data:' + info.symbol.contentType + ';base64,' + info.symbol.imageData || info.symbol.url
+                imageData: imageData
               };
               return (
                 <PointPictureSymbol height={style.height} width={style.width} imageData={style.imageData} label={label} key={title + renderer.field + i} />
@@ -138,11 +146,15 @@ class PointLegend extends React.Component {
         break;
       default:
         const label = renderer.label;
+        let imageData = renderer.symbol.url;
+        if (renderer.symbol.imageData !== undefined) {
+          imageData = 'data:' + renderer.symbol.contentType + ';base64,' + renderer.symbol.imageData;
+        }
         if (renderer.symbol.type === 'esriPMS') {
           const style = {
             height: String(renderer.symbol.height),
             width: String(renderer.symbol.width),
-            imageData: 'data:' + renderer.symbol.contentType + ';base64,' + renderer.symbol.imageData || renderer.symbol.url
+            imageData: imageData
           };
           LegendContents = (
             <PointPictureSymbol height={style.height} width={style.width} imageData={style.imageData} label={label} />

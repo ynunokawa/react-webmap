@@ -2422,11 +2422,15 @@ var PointLegend = function (_React$Component) {
           } else {
             LegendContents = renderer.classBreakInfos.map(function (info, i) {
               var label = info.label;
+              var imageData = info.symbol.url;
+              if (info.symbol.imageData !== undefined) {
+                imageData = 'data:' + info.symbol.contentType + ';base64,' + info.symbol.imageData;
+              }
               if (info.symbol.type === 'esriPMS') {
                 var style = {
                   height: String(info.symbol.height),
                   width: String(info.symbol.width),
-                  imageData: 'data:' + info.symbol.contentType + ';base64,' + info.symbol.imageData || info.symbol.url
+                  imageData: imageData
                 };
                 return _react2.default.createElement(_PointPictureSymbol2.default, { height: style.height, width: style.width, imageData: style.imageData, label: label, key: title + renderer.field + i });
               } else if (info.symbol.type === 'esriSMS') {
@@ -2450,11 +2454,15 @@ var PointLegend = function (_React$Component) {
           } else {
             LegendContents = renderer.uniqueValueInfos.map(function (info, i) {
               var label = info.label;
+              var imageData = info.symbol.url;
+              if (info.symbol.imageData !== undefined) {
+                imageData = 'data:' + info.symbol.contentType + ';base64,' + info.symbol.imageData;
+              }
               if (info.symbol.type === 'esriPMS') {
                 var style = {
                   height: String(info.symbol.height),
                   width: String(info.symbol.width),
-                  imageData: 'data:' + info.symbol.contentType + ';base64,' + info.symbol.imageData || info.symbol.url
+                  imageData: imageData
                 };
                 return _react2.default.createElement(_PointPictureSymbol2.default, { height: style.height, width: style.width, imageData: style.imageData, label: label, key: title + renderer.field + i });
               } else if (info.symbol.type === 'esriSMS') {
@@ -2465,11 +2473,15 @@ var PointLegend = function (_React$Component) {
           break;
         default:
           var label = renderer.label;
+          var imageData = renderer.symbol.url;
+          if (renderer.symbol.imageData !== undefined) {
+            imageData = 'data:' + renderer.symbol.contentType + ';base64,' + renderer.symbol.imageData;
+          }
           if (renderer.symbol.type === 'esriPMS') {
             var style = {
               height: String(renderer.symbol.height),
               width: String(renderer.symbol.width),
-              imageData: 'data:' + renderer.symbol.contentType + ';base64,' + renderer.symbol.imageData || renderer.symbol.url
+              imageData: imageData
             };
             LegendContents = _react2.default.createElement(_PointPictureSymbol2.default, { height: style.height, width: style.width, imageData: style.imageData, label: label });
           } else if (renderer.symbol.type === 'esriSMS') {
