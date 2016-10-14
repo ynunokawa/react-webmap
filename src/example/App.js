@@ -28,7 +28,8 @@ class App extends Mediator {
       this.state.legend = {
         layer1: {},
         layer2: {},
-        layer3: {}
+        layer3: {},
+        layer4: {}
       };
       this.state.treemapChart = {
         layer: {},
@@ -65,7 +66,7 @@ class App extends Mediator {
   }
 
   readyComponents () {
-    const legendLayerIndexes = [1, 2, 6];
+    const legendLayerIndexes = [1, 2, 6, 8];
 
     const barChartLayerIndex = 1;
     const barChartFields = ['pop_u15', 'pop_o65'];
@@ -76,7 +77,7 @@ class App extends Mediator {
       name: 'prefname',
       quantity: 'popdense'
     };
-    
+
     const listGroupsLayerIndex = 4;
     const listGroupsLayoutFields = {
       type: '種別',
@@ -99,7 +100,8 @@ class App extends Mediator {
       legend: {
         layer1: this.state.webmap.layers[legendLayerIndexes[0]],
         layer2: this.state.webmap.layers[legendLayerIndexes[1]],
-        layer3: this.state.webmap.layers[legendLayerIndexes[2]]
+        layer3: this.state.webmap.layers[legendLayerIndexes[2]],
+        layer4: this.state.webmap.layers[legendLayerIndexes[3]]
       },
       barChart: {
         layer: this.state.webmap.layers[barChartLayerIndex],
@@ -237,13 +239,16 @@ class App extends Mediator {
             <Col xs={12} md={12}>
               <h3 id="legend"><code>&lt;Legend /&gt;</code></h3>
               <Legend
-                layer={this.state.legend.layer1} 
+                layer={this.state.legend.layer1}
               />
               <Legend
-                layer={this.state.legend.layer2} 
+                layer={this.state.legend.layer2}
               />
               <Legend
-                layer={this.state.legend.layer3} 
+                layer={this.state.legend.layer3}
+              />
+              <Legend
+                layer={this.state.legend.layer4}
               />
             </Col>
           </Row>
@@ -261,10 +266,10 @@ class App extends Mediator {
               <h3 id="barchart"><code>&lt;BarChart /&gt;</code></h3>
               <BarChart
                 layer={this.state.barChart.layer}
-                fields={this.state.barChart.fields} 
-                nameField={this.state.barChart.nameField} 
+                fields={this.state.barChart.fields}
+                nameField={this.state.barChart.nameField}
                 quantityLabel={"人口（万人）"}
-                denominator={10000} 
+                denominator={10000}
                 height={500}
                 legendWidth={100}
                 onMouseoverChart={this.highlightFeature}

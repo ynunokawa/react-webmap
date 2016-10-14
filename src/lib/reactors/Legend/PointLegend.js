@@ -72,7 +72,7 @@ class PointLegend extends React.Component {
         this.layer = this.props.layer.layer._layers[k];
       }
     }.bind(this));
-    
+
     const title = this.props.layer.title;
     const renderer = this.layer.options.drawingInfo.renderer;
 
@@ -107,7 +107,21 @@ class PointLegend extends React.Component {
                 <PointPictureSymbol height={style.height} width={style.width} imageData={style.imageData} label={label} key={title + renderer.field + i} />
               );
             } else if (info.symbol.type === 'esriSMS') {
-              // work in progress..
+              const style = {
+                type: info.symbol.style,
+                color: this.getColor(info.symbol.color),
+                opacity: this.getOpacity(info.symbol.color[3]),
+                size: info.symbol.size,
+                outline: {
+                  color: this.getColor(info.symbol.outline.color),
+                  opacity: this.getOpacity(info.symbol.outline.color[3]),
+                  width: String(info.symbol.outline.width),
+                  dasharray: this.getDasharray(info.symbol.outline.style)
+                }
+              };
+              return (
+                <PointSymbol size={style.size} opacity={style.opacity} color={style.color} type={style.type} outlineColor={style.outline.color} outlineOpacity={style.outline.opacity} outlineWidth={style.outline.width} outlineDasharray={style.outline.dasharray} label={label} key={title + renderer.field + i} />
+              );
             }
           }.bind(this));
         }
@@ -139,7 +153,21 @@ class PointLegend extends React.Component {
                 <PointPictureSymbol height={style.height} width={style.width} imageData={style.imageData} label={label} key={title + renderer.field + i} />
               );
             } else if (info.symbol.type === 'esriSMS') {
-              // work in progress..
+              const style = {
+                type: info.symbol.style,
+                color: this.getColor(info.symbol.color),
+                opacity: this.getOpacity(info.symbol.color[3]),
+                size: info.symbol.size,
+                outline: {
+                  color: this.getColor(info.symbol.outline.color),
+                  opacity: this.getOpacity(info.symbol.outline.color[3]),
+                  width: String(info.symbol.outline.width),
+                  dasharray: this.getDasharray(info.symbol.outline.style)
+                }
+              };
+              return (
+                <PointSymbol size={style.size} opacity={style.opacity} color={style.color} type={style.type} outlineColor={style.outline.color} outlineOpacity={style.outline.opacity} outlineWidth={style.outline.width} outlineDasharray={style.outline.dasharray} label={label} key={title + renderer.field + i} />
+              );
             }
           }.bind(this));
         }
@@ -160,7 +188,21 @@ class PointLegend extends React.Component {
             <PointPictureSymbol height={style.height} width={style.width} imageData={style.imageData} label={label} />
           );
         } else if (renderer.symbol.type === 'esriSMS') {
-          // work in progress..
+          const style = {
+            type: renderer.symbol.style,
+            color: this.getColor(renderer.symbol.color),
+            opacity: this.getOpacity(renderer.symbol.color[3]),
+            size: renderer.symbol.size,
+            outline: {
+              color: this.getColor(renderer.symbol.outline.color),
+              opacity: this.getOpacity(renderer.symbol.outline.color[3]),
+              width: String(renderer.symbol.outline.width),
+              dasharray: this.getDasharray(renderer.symbol.outline.style)
+            }
+          };
+          return (
+            <PointSymbol size={style.size} opacity={style.opacity} color={style.color} type={style.type} outlineColor={style.outline.color} outlineOpacity={style.outline.opacity} outlineWidth={style.outline.width} outlineDasharray={style.outline.dasharray} label={label} key={title + renderer.field + i} />
+          );
         }
     }
 
