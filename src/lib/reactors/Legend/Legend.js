@@ -19,6 +19,8 @@
 // THE SOFTWARE.
 
 import React from 'react';
+import PointLegend from './PointLegend';
+import PolylineLegend from './PolylineLegend';
 import PolygonLegend from './PolygonLegend';
 
 class Legend extends React.Component {
@@ -37,11 +39,15 @@ class Legend extends React.Component {
 
   render () {
     if (this.props.layer.layer !== undefined) {
-      Object.keys(this.props.layer.layer._layers).map(function (k) {
-        if (this.props.layer.layer._layers[k]._cache !== undefined) {
-          this.layer = this.props.layer.layer._layers[k];
-        }
-      }.bind(this));
+      if (this.props.layer.layer._cache !== undefined) {
+        this.layer = this.props.layer.layer;
+      } else {
+        Object.keys(this.props.layer.layer._layers).map(function (k) {
+          if (this.props.layer.layer._layers[k]._cache !== undefined) {
+            this.layer = this.props.layer.layer._layers[k];
+          }
+        }.bind(this));
+      }
       
       const renderer = this.layer.options.drawingInfo.renderer;
       let symbol;
@@ -58,15 +64,13 @@ class Legend extends React.Component {
       }
 
       if (symbol.type === 'esriSMS' || symbol.type === 'esriPMS') {
-        return false;
-        /*return (
+        return (
           <PointLegend layer={this.props.layer} />
-        );*/
+        );
       } else if (symbol.type === 'esriSLS') {
-        return false;
-        /*return (
+        return (
           <PolylineLegend layer={this.props.layer} />
-        );*/
+        );
       } else if (symbol.type === 'esriSFS') {
         return (
           <PolygonLegend layer={this.props.layer} />
