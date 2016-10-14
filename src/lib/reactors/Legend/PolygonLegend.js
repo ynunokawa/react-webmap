@@ -36,6 +36,27 @@ class PolygonLegend extends React.Component {
     return String(opacity / 255);
   }
 
+  getDasharray (dashStyle) {
+    let dasharray;
+    switch (dashStyle) {
+      case 'esriSLSDot':
+        dasharray = '1, 3';
+        break;
+      case 'esriSLSDash':
+        dasharray = '6, 4.5';
+        break;
+      case 'esriSLSDashDot':
+        dasharray = '8, 6, 2, 6';
+        break;
+      case 'esriSLSDashDotDot':
+        dasharray = '32, 12, 4, 12, 4, 12';
+        break;
+      default:
+        dasharray = 'none';
+    }
+    return dasharray;
+  }
+
   shouldComponentUpdate (nextProps, nextState) {
     if (nextProps.layer.layer !== undefined) {
       return true;
@@ -69,7 +90,6 @@ class PolygonLegend extends React.Component {
             }
           });
         } else {
-          // work in progress..
           LegendContents = renderer.classBreakInfos.map(function (info, i) {
             const style = {
               color: this.getColor(info.symbol.color),
@@ -77,12 +97,13 @@ class PolygonLegend extends React.Component {
               outline: {
                 color: this.getColor(info.symbol.outline.color),
                 opacity: this.getOpacity(info.symbol.outline.color[3]),
-                width: String(info.symbol.outline.width)
+                width: String(info.symbol.outline.width),
+                dasharray: this.getDasharray(info.symbol.outline.style)
               }
             };
             const label = info.label;
             return (
-              <PolygonSymbol color={style.color} opacity={style.opacity} outlineColor={style.outline.color} outlineOpacity={style.outline.opacity} outlineWidth={style.outline.width} label={label} key={title + renderer.field + i} />
+              <PolygonSymbol color={style.color} opacity={style.opacity} outlineColor={style.outline.color} outlineOpacity={style.outline.opacity} outlineWidth={style.outline.width} outlineDasharray={style.outline.dasharray} label={label} key={title + renderer.field + i} />
             );
           }.bind(this));
         }
@@ -105,12 +126,13 @@ class PolygonLegend extends React.Component {
               outline: {
                 color: this.getColor(info.symbol.outline.color),
                 opacity: this.getOpacity(info.symbol.outline.color[3]),
-                width: String(info.symbol.outline.width)
+                width: String(info.symbol.outline.width),
+                dasharray: this.getDasharray(info.symbol.outline.style)
               }
             };
             const label = info.label;
             return (
-              <PolygonSymbol color={style.color} opacity={style.opacity} outlineColor={style.outline.color} outlineOpacity={style.outline.opacity} outlineWidth={style.outline.width} label={label}  key={title + renderer.field + i} />
+              <PolygonSymbol color={style.color} opacity={style.opacity} outlineColor={style.outline.color} outlineOpacity={style.outline.opacity} outlineWidth={style.outline.width} outlineDasharray={style.outline.dasharray} label={label}  key={title + renderer.field + i} />
             );
           }.bind(this));
         }
@@ -122,12 +144,13 @@ class PolygonLegend extends React.Component {
           outline: {
             color: this.getColor(renderer.symbol.outline.color),
             opacity: this.getOpacity(renderer.symbol.outline.color[3]),
-            width: String(renderer.symbol.outline.width)
+            width: String(renderer.symbol.outline.width),
+            dasharray: this.getDasharray(renderer.symbol.outline.style)
           }
         };
         const label = renderer.label;
         LegendContents = (
-          <PolygonSymbol color={style.color} opacity={style.opacity} outlineColor={style.outline.color} outlineOpacity={style.outline.opacity} outlineWidth={style.outline.width} label={label} />
+          <PolygonSymbol color={style.color} opacity={style.opacity} outlineColor={style.outline.color} outlineOpacity={style.outline.opacity} outlineWidth={style.outline.width} outlineDasharray={style.outline.dasharray} label={label} />
         );
     }
 

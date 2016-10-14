@@ -32,7 +32,7 @@ class PolygonSymbol extends React.Component {
           <svg overflow="hidden" width="23" height="23">
             <defs></defs>
             <g transform="matrix(1.00000000,0.00000000,0.00000000,1.00000000,11.50000000,11.50000000)">
-              <path fill={this.props.color} fillOpacity={this.props.opacity} stroke={this.props.outlineColor} strokeOpacity={this.props.outlineOpacity} strokeWidth={this.props.outlineWidth} strokeLinecap="butt" strokeLinejoin="miter" strokeMiterlimit="4" d="M-10-10L 10 0L 10 10L-10 10L-10-10Z" fillRule="evenodd" strokeDasharray="none"></path>
+              <path fill={this.props.color} fillOpacity={this.props.opacity} stroke={this.props.outlineColor} strokeOpacity={this.props.outlineOpacity} strokeWidth={this.props.outlineWidth} strokeLinecap="butt" strokeLinejoin="miter" strokeMiterlimit="4" d="M-10-10L 10 0L 10 10L-10 10L-10-10Z" fillRule="evenodd" strokeDasharray={this.props.outlineDasharray}></path>
             </g>
           </svg>
         </div>
@@ -50,6 +50,7 @@ PolygonSymbol.propTypes = {
   outlineColor: React.PropTypes.string,
   outlineOpacity: React.PropTypes.string,
   outlineWidth: React.PropTypes.string,
+  outlineDasharray: React.PropTypes.string,
   label: React.PropTypes.string
 };
 
