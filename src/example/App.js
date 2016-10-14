@@ -27,7 +27,8 @@ class App extends Mediator {
       super(props);
       this.state.legend = {
         layer1: {},
-        layer2: {}
+        layer2: {},
+        layer3: {}
       };
       this.state.treemapChart = {
         layer: {},
@@ -64,7 +65,7 @@ class App extends Mediator {
   }
 
   readyComponents () {
-    const legendLayerIndexes = [1, 2];
+    const legendLayerIndexes = [1, 2, 6];
 
     const barChartLayerIndex = 1;
     const barChartFields = ['pop_u15', 'pop_o65'];
@@ -97,7 +98,8 @@ class App extends Mediator {
     this.setState({
       legend: {
         layer1: this.state.webmap.layers[legendLayerIndexes[0]],
-        layer2: this.state.webmap.layers[legendLayerIndexes[1]]
+        layer2: this.state.webmap.layers[legendLayerIndexes[1]],
+        layer3: this.state.webmap.layers[legendLayerIndexes[2]]
       },
       barChart: {
         layer: this.state.webmap.layers[barChartLayerIndex],
@@ -239,6 +241,9 @@ class App extends Mediator {
               />
               <Legend
                 layer={this.state.legend.layer2} 
+              />
+              <Legend
+                layer={this.state.legend.layer3} 
               />
             </Col>
           </Row>

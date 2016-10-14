@@ -20,7 +20,7 @@
 
 import React from 'react';
 
-class PolygonSymbol extends React.Component {
+class PointPictureSymbol extends React.Component {
   constructor (props) {
       super(props);
   }
@@ -29,11 +29,9 @@ class PolygonSymbol extends React.Component {
     return (
       <div className="react-webmap-legend-row">
         <div className="react-webmap-legend-cell react-webmap-legend-symbol">
-          <svg overflow="hidden" width="23" height="23">
+          <svg overflow="hidden" width={this.props.width} height={this.props.height}>
             <defs></defs>
-            <g transform="matrix(1.00000000,0.00000000,0.00000000,1.00000000,11.50000000,11.50000000)">
-              <path fill={this.props.color} fillOpacity={this.props.opacity} stroke={this.props.outlineColor} strokeOpacity={this.props.outlineOpacity} strokeWidth={this.props.outlineWidth} strokeLinecap="butt" strokeLinejoin="miter" strokeMiterlimit="4" d="M-10-10L 10 0L 10 10L-10 10L-10-10Z" fillRule="evenodd" strokeDasharray={this.props.outlineDasharray}></path>
-            </g>
+            <image fillOpacity="0" stroke="none" strokeOpacity="0" strokeWidth="1" strokeLinecap="butt" strokeLinejoin="miter" strokeMiterlimit="4" x="-19" y="-19" width={this.props.width} height={this.props.height} preserveAspectRatio="none" xmlnsXlink="http://www.w3.org/1999/xlink" xlinkHref={this.props.imageData} transform="matrix(1.00000000,0.00000000,0.00000000,1.00000000,19.00000000,19.00000000)"></image>
           </svg>
         </div>
         <div className="react-webmap-legend-cell react-webmap-legend-label">
@@ -44,16 +42,13 @@ class PolygonSymbol extends React.Component {
   }
 }
 
-PolygonSymbol.propTypes = {
-  color: React.PropTypes.string,
-  opacity: React.PropTypes.string,
-  outlineColor: React.PropTypes.string,
-  outlineOpacity: React.PropTypes.string,
-  outlineWidth: React.PropTypes.string,
-  outlineDasharray: React.PropTypes.string,
+PointPictureSymbol.propTypes = {
+  height: React.PropTypes.string,
+  width: React.PropTypes.string,
+  imageData: React.PropTypes.string,
   label: React.PropTypes.string
 };
 
-PolygonSymbol.displayName = 'PolygonSymbol';
+PointPictureSymbol.displayName = 'PointPictureSymbol';
 
-export default PolygonSymbol;
+export default PointPictureSymbol;

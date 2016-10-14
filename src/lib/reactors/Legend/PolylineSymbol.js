@@ -20,7 +20,7 @@
 
 import React from 'react';
 
-class PolygonSymbol extends React.Component {
+class PolylineSymbol extends React.Component {
   constructor (props) {
       super(props);
   }
@@ -29,11 +29,9 @@ class PolygonSymbol extends React.Component {
     return (
       <div className="react-webmap-legend-row">
         <div className="react-webmap-legend-cell react-webmap-legend-symbol">
-          <svg overflow="hidden" width="23" height="23">
+          <svg overflow="hidden" width="30" height="30">
             <defs></defs>
-            <g transform="matrix(1.00000000,0.00000000,0.00000000,1.00000000,11.50000000,11.50000000)">
-              <path fill={this.props.color} fillOpacity={this.props.opacity} stroke={this.props.outlineColor} strokeOpacity={this.props.outlineOpacity} strokeWidth={this.props.outlineWidth} strokeLinecap="butt" strokeLinejoin="miter" strokeMiterlimit="4" d="M-10-10L 10 0L 10 10L-10 10L-10-10Z" fillRule="evenodd" strokeDasharray={this.props.outlineDasharray}></path>
-            </g>
+            <path fill="none" fillOpacity="0" stroke={this.props.color} strokeOpacity={this.props.opacity} strokeWidth={this.props.width} strokeLinecap="butt" strokeLinejoin="miter" strokeMiterlimit="4" d="M-15 0L 15 0" strokeDasharray={this.props.dasharray} transform="matrix(1.00000000,0.00000000,0.00000000,1.00000000,15.00000000,15.00000000)"></path>
           </svg>
         </div>
         <div className="react-webmap-legend-cell react-webmap-legend-label">
@@ -44,16 +42,14 @@ class PolygonSymbol extends React.Component {
   }
 }
 
-PolygonSymbol.propTypes = {
+PolylineSymbol.propTypes = {
   color: React.PropTypes.string,
   opacity: React.PropTypes.string,
-  outlineColor: React.PropTypes.string,
-  outlineOpacity: React.PropTypes.string,
-  outlineWidth: React.PropTypes.string,
-  outlineDasharray: React.PropTypes.string,
+  width: React.PropTypes.string,
+  dasharray: React.PropTypes.string,
   label: React.PropTypes.string
 };
 
-PolygonSymbol.displayName = 'PolygonSymbol';
+PolylineSymbol.displayName = 'PolylineSymbol';
 
-export default PolygonSymbol;
+export default PolylineSymbol;

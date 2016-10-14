@@ -19,10 +19,10 @@
 // THE SOFTWARE.
 
 import React from 'react';
-import PolygonSymbol from './PolygonSymbol';
+import PolylineSymbol from './PolylineSymbol';
 import ColorRamp from './ColorRamp';
 
-class PolygonLegend extends React.Component {
+class PolylineLegend extends React.Component {
   constructor (props) {
       super(props);
       this.layer = null;
@@ -94,16 +94,12 @@ class PolygonLegend extends React.Component {
             const style = {
               color: this.getColor(info.symbol.color),
               opacity: this.getOpacity(info.symbol.color[3]),
-              outline: {
-                color: this.getColor(info.symbol.outline.color),
-                opacity: this.getOpacity(info.symbol.outline.color[3]),
-                width: String(info.symbol.outline.width),
-                dasharray: this.getDasharray(info.symbol.outline.style)
-              }
+              width: String(info.symbol.width),
+              dasharray: this.getDasharray(info.symbol.style)
             };
             const label = info.label;
             return (
-              <PolygonSymbol color={style.color} opacity={style.opacity} outlineColor={style.outline.color} outlineOpacity={style.outline.opacity} outlineWidth={style.outline.width} outlineDasharray={style.outline.dasharray} label={label} key={title + renderer.field + i} />
+              <PolylineSymbol color={style.color} opacity={style.opacity} width={style.width} dasharray={style.dasharray} label={label} key={title + renderer.field + i} />
             );
           }.bind(this));
         }
@@ -123,34 +119,26 @@ class PolygonLegend extends React.Component {
             const style = {
               color: this.getColor(info.symbol.color),
               opacity: this.getOpacity(info.symbol.color[3]),
-              outline: {
-                color: this.getColor(info.symbol.outline.color),
-                opacity: this.getOpacity(info.symbol.outline.color[3]),
-                width: String(info.symbol.outline.width),
-                dasharray: this.getDasharray(info.symbol.outline.style)
-              }
+              width: String(info.symbol.width),
+              dasharray: this.getDasharray(info.symbol.style)
             };
             const label = info.label;
             return (
-              <PolygonSymbol color={style.color} opacity={style.opacity} outlineColor={style.outline.color} outlineOpacity={style.outline.opacity} outlineWidth={style.outline.width} outlineDasharray={style.outline.dasharray} label={label}  key={title + renderer.field + i} />
+              <PolylineSymbol color={style.color} opacity={style.opacity} width={style.width} dasharray={style.dasharray} label={label} key={title + renderer.field + i} />
             );
           }.bind(this));
         }
         break;
       default:
         const style = {
-          color: this.getColor(renderer.symbol.color),
-          opacity: this.getOpacity(renderer.symbol.color[3]),
-          outline: {
-            color: this.getColor(renderer.symbol.outline.color),
-            opacity: this.getOpacity(renderer.symbol.outline.color[3]),
-            width: String(renderer.symbol.outline.width),
-            dasharray: this.getDasharray(renderer.symbol.outline.style)
-          }
+          color: this.getColor(info.symbol.color),
+          opacity: this.getOpacity(info.symbol.color[3]),
+          width: String(info.symbol.width),
+          dasharray: this.getDasharray(info.symbol.style)
         };
         const label = renderer.label;
         LegendContents = (
-          <PolygonSymbol color={style.color} opacity={style.opacity} outlineColor={style.outline.color} outlineOpacity={style.outline.opacity} outlineWidth={style.outline.width} outlineDasharray={style.outline.dasharray} label={label} />
+          <PolylineSymbol color={style.color} opacity={style.opacity} width={style.width} dasharray={style.dasharray} label={label} />
         );
     }
 
@@ -164,10 +152,10 @@ class PolygonLegend extends React.Component {
   }
 }
 
-PolygonLegend.propTypes = {
+PolylineLegend.propTypes = {
   layer: React.PropTypes.object
 };
 
-PolygonLegend.displayName = 'PolygonLegend';
+PolylineLegend.displayName = 'PolylineLegend';
 
-export default PolygonLegend;
+export default PolylineLegend;

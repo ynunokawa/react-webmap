@@ -19,10 +19,11 @@
 // THE SOFTWARE.
 
 import React from 'react';
-import PolygonSymbol from './PolygonSymbol';
+import PointSymbol from './PointSymbol';
+import PointPictureSymbol from './PointPictureSymbol';
 import ColorRamp from './ColorRamp';
 
-class PolygonLegend extends React.Component {
+class PointLegend extends React.Component {
   constructor (props) {
       super(props);
       this.layer = null;
@@ -91,20 +92,19 @@ class PolygonLegend extends React.Component {
           });
         } else {
           LegendContents = renderer.classBreakInfos.map(function (info, i) {
-            const style = {
-              color: this.getColor(info.symbol.color),
-              opacity: this.getOpacity(info.symbol.color[3]),
-              outline: {
-                color: this.getColor(info.symbol.outline.color),
-                opacity: this.getOpacity(info.symbol.outline.color[3]),
-                width: String(info.symbol.outline.width),
-                dasharray: this.getDasharray(info.symbol.outline.style)
-              }
-            };
             const label = info.label;
-            return (
-              <PolygonSymbol color={style.color} opacity={style.opacity} outlineColor={style.outline.color} outlineOpacity={style.outline.opacity} outlineWidth={style.outline.width} outlineDasharray={style.outline.dasharray} label={label} key={title + renderer.field + i} />
-            );
+            if (info.symbol.type === 'esriPMS') {
+              const style = {
+                height: String(info.symbol.height),
+                width: String(info.symbol.width),
+                imageData: 'data:' + info.symbol.contentType + ';base64,' + info.symbol.imageData || info.symbol.url
+              };
+              return (
+                <PointPictureSymbol height={style.height} width={style.width} imageData={style.imageData} label={label} key={title + renderer.field + i} />
+              );
+            } else if (info.symbol.type === 'esriSMS') {
+              // work in progress..
+            }
           }.bind(this));
         }
         break;
@@ -120,38 +120,36 @@ class PolygonLegend extends React.Component {
           });
         } else {
           LegendContents = renderer.uniqueValueInfos.map(function (info, i) {
-            const style = {
-              color: this.getColor(info.symbol.color),
-              opacity: this.getOpacity(info.symbol.color[3]),
-              outline: {
-                color: this.getColor(info.symbol.outline.color),
-                opacity: this.getOpacity(info.symbol.outline.color[3]),
-                width: String(info.symbol.outline.width),
-                dasharray: this.getDasharray(info.symbol.outline.style)
-              }
-            };
             const label = info.label;
-            return (
-              <PolygonSymbol color={style.color} opacity={style.opacity} outlineColor={style.outline.color} outlineOpacity={style.outline.opacity} outlineWidth={style.outline.width} outlineDasharray={style.outline.dasharray} label={label}  key={title + renderer.field + i} />
-            );
+            if (info.symbol.type === 'esriPMS') {
+              const style = {
+                height: String(info.symbol.height),
+                width: String(info.symbol.width),
+                imageData: 'data:' + info.symbol.contentType + ';base64,' + info.symbol.imageData || info.symbol.url
+              };
+              return (
+                <PointPictureSymbol height={style.height} width={style.width} imageData={style.imageData} label={label} key={title + renderer.field + i} />
+              );
+            } else if (info.symbol.type === 'esriSMS') {
+              // work in progress..
+            }
           }.bind(this));
         }
         break;
       default:
-        const style = {
-          color: this.getColor(renderer.symbol.color),
-          opacity: this.getOpacity(renderer.symbol.color[3]),
-          outline: {
-            color: this.getColor(renderer.symbol.outline.color),
-            opacity: this.getOpacity(renderer.symbol.outline.color[3]),
-            width: String(renderer.symbol.outline.width),
-            dasharray: this.getDasharray(renderer.symbol.outline.style)
-          }
-        };
         const label = renderer.label;
-        LegendContents = (
-          <PolygonSymbol color={style.color} opacity={style.opacity} outlineColor={style.outline.color} outlineOpacity={style.outline.opacity} outlineWidth={style.outline.width} outlineDasharray={style.outline.dasharray} label={label} />
-        );
+        if (renderer.symbol.type === 'esriPMS') {
+          const style = {
+            height: String(renderer.symbol.height),
+            width: String(renderer.symbol.width),
+            imageData: 'data:' + renderer.symbol.contentType + ';base64,' + renderer.symbol.imageData || renderer.symbol.url
+          };
+          LegendContents = (
+            <PointPictureSymbol height={style.height} width={style.width} imageData={style.imageData} label={label} />
+          );
+        } else if (renderer.symbol.type === 'esriSMS') {
+          // work in progress..
+        }
     }
 
     return (
@@ -164,10 +162,10 @@ class PolygonLegend extends React.Component {
   }
 }
 
-PolygonLegend.propTypes = {
+PointLegend.propTypes = {
   layer: React.PropTypes.object
 };
 
-PolygonLegend.displayName = 'PolygonLegend';
+PointLegend.displayName = 'PointLegend';
 
-export default PolygonLegend;
+export default PointLegend;
