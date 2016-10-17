@@ -3415,7 +3415,8 @@ var ListGroupItems = function (_React$Component) {
       if (layer !== null) {
         layer.eachFeature(function (l) {
           if (e.target.title === l.feature.properties[layoutFields.name]) {
-            this.props.onClickList(l.feature.geometry.coordinates.reverse(), 17);
+            var coordinates = [l.feature.geometry.coordinates[1], l.feature.geometry.coordinates[0]];
+            this.props.onClickList(coordinates, 17);
           }
         }.bind(this));
       }
@@ -3555,8 +3556,8 @@ var ListGroups = function (_React$Component) {
       if (lyr !== null) {
         lyr.eachFeature(function (l) {
           if (e.target.title === l.feature.properties[layoutFields.name]) {
-            console.log(l);
-            this.props.onClickList(l.feature.geometry.coordinates.reverse(), 17);
+            var coordinates = [l.feature.geometry.coordinates[1], l.feature.geometry.coordinates[0]];
+            this.props.onClickList(coordinates, 17);
           }
         }.bind(this));
       }
@@ -3735,8 +3736,8 @@ var ItemThumbnail = function (_React$Component) {
   _createClass(ItemThumbnail, [{
     key: '_onClickThumbnail',
     value: function _onClickThumbnail() {
-      var feature = this.props.feature;
-      this.props.onClickThumbnail(feature.geometry.coordinates.reverse(), 15);
+      var coordinates = [this.props.feature.geometry.coordinates[1], this.props.feature.geometry.coordinates[0]];
+      this.props.onClickThumbnail(coordinates, 15);
     }
   }, {
     key: '_onMouseoverThumbnail',
