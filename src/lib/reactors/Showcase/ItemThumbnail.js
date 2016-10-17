@@ -30,8 +30,8 @@ class ItemThumbnail extends React.Component {
   }
 
   _onClickThumbnail () {
-    const feature = this.props.feature;
-    this.props.onClickThumbnail(feature.geometry.coordinates.reverse(), 15);
+    const coordinates = [this.props.feature.geometry.coordinates[1], this.props.feature.geometry.coordinates[0]];
+    this.props.onClickThumbnail(coordinates, 15);
   }
 
   _onMouseoverThumbnail () {
@@ -55,10 +55,10 @@ class ItemThumbnail extends React.Component {
     }
 
     return (
-      <Thumbnail 
-        src={imageUrl} 
-        onClick={this._onClickThumbnail} 
-        onMouseOver={this._onMouseoverThumbnail} 
+      <Thumbnail
+        src={imageUrl}
+        onClick={this._onClickThumbnail}
+        onMouseOver={this._onMouseoverThumbnail}
         onMouseOut={this._onMouseoutThumbnail}
         className="react-webmap-item-thumbnail"
       >

@@ -33,7 +33,8 @@ class ListGroupItems extends React.Component {
     if (layer !== null) {
       layer.eachFeature(function (l) {
         if (e.target.title === l.feature.properties[layoutFields.name]) {
-          this.props.onClickList(l.feature.geometry.coordinates.reverse(), 17);
+          const coordinates = [l.feature.geometry.coordinates[1], l.feature.geometry.coordinates[0]];
+          this.props.onClickList(coordinates, 17);
         }
       }.bind(this));
     }
@@ -42,14 +43,14 @@ class ListGroupItems extends React.Component {
   render () {
     utils.bootstrapUtils.addStyle(ListGroupItem, 'custom');
     utils.bootstrapUtils.addStyle(Badge, 'custom');
-    
+
     const layoutFields = this.props.layoutFields;
     const typeValue = this.props.typeValue;
 
     const listGroupHeader = (
       <ListGroupItem bsStyle="custom">{typeValue}</ListGroupItem>
     );
-      
+
     const listGroupItems = this.props.features.map(function (f, index) {
       return (
         <ListGroupItem title={f.properties[layoutFields.name]} onClick={this._onClickList} href="#" key={f.properties[layoutFields.name] + "-" + index}>

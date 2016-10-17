@@ -46,8 +46,8 @@ class ListGroups extends React.Component {
     if (lyr !== null) {
       lyr.eachFeature(function (l) {
         if (e.target.title === l.feature.properties[layoutFields.name]) {
-          console.log(l);
-          this.props.onClickList(l.feature.geometry.coordinates.reverse(), 17);
+          const coordinates = [l.feature.geometry.coordinates[1], l.feature.geometry.coordinates[0]];
+          this.props.onClickList(coordinates, 17);
         }
       }.bind(this));
     }
@@ -79,9 +79,9 @@ class ListGroups extends React.Component {
             margin-bottom: 10px;
         }
         `}</style>
-        <Switch 
-          defaultValue={this.props.filter} 
-          onChange={this.onFilter} 
+        <Switch
+          defaultValue={this.props.filter}
+          onChange={this.onFilter}
           onText={"Filtered"}
           offText={"Unfiltered"}
         />
@@ -117,11 +117,11 @@ class ListGroups extends React.Component {
 
       return (
         <Col xs={12} sm={6} md={4} key={t}>
-          <ListGroupItems 
+          <ListGroupItems
             typeValue={t}
             features={features}
-            layer={lyr} 
-            layoutFields={this.props.layoutFields} 
+            layer={lyr}
+            layoutFields={this.props.layoutFields}
             onClickList={this.props.onClickList}
           />
         </Col>
